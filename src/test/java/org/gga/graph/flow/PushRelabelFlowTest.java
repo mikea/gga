@@ -1,7 +1,7 @@
 package org.gga.graph.flow;
 
 import junit.framework.TestCase;
-import org.gga.graph.Graph;
+import org.gga.graph.MutableGraph;
 import org.gga.graph.impl.SparseGraphImpl;
 
 /**
@@ -9,7 +9,7 @@ import org.gga.graph.impl.SparseGraphImpl;
  */
 public class PushRelabelFlowTest extends TestCase {
     public void test1() throws Exception {
-        Graph g = new SparseGraphImpl(6, true);
+        MutableGraph g = new SparseGraphImpl(6, true);
 
         g.insert(0, 1);
         g.insert(0, 2);

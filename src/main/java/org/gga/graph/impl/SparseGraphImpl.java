@@ -2,24 +2,25 @@ package org.gga.graph.impl;
 
 import org.gga.graph.Edge;
 import org.gga.graph.EdgeIterator;
-import org.gga.graph.Graph;
+import org.gga.graph.MutableGraph;
 import org.gga.graph.search.dfs.DepthFirstSearch;
 import org.gga.graph.search.dfs.Dfs;
 import org.gga.graph.search.dfs.DfsVisitor;
 
+import javax.annotation.Nullable;
 import java.util.Iterator;
 
 /**
  * @author mike
  */
-public class SparseGraphImpl implements Graph {
+public class SparseGraphImpl implements MutableGraph {
     private final int V;
     private int E = 0;
     private boolean isDigraph;
     private final Edge[][] edges;
 
     public SparseGraphImpl(final int v, final boolean isDigraph) {
-        this.V = v;
+        V = v;
         this.isDigraph = isDigraph;
         edges = new Edge[v][];
     }
@@ -39,6 +40,7 @@ public class SparseGraphImpl implements Graph {
         return isDigraph;
     }
 
+    @Nullable
     @Override
     public Edge edge(final int v, final int w) {
         Edge[] outEdges = edges[v];
@@ -135,6 +137,7 @@ public class SparseGraphImpl implements Graph {
         }
     }
 
+    @Override
     public Iterator<Edge> getEdgesIterator(final int v) {
         final Edge[] outEdges = edges[v];
 

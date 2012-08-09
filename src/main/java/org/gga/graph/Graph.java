@@ -2,6 +2,7 @@ package org.gga.graph;
 
 import org.gga.graph.search.dfs.HasDfs;
 
+import javax.annotation.Nullable;
 import java.util.Iterator;
 
 /**
@@ -23,11 +24,8 @@ public interface Graph extends HasDfs {
 
     boolean isDirected();
 
+    @Nullable
     Edge edge(int v, int w);
-
-    Edge insert(int v, int w);
-
-    void remove(Edge e);
 
     EdgeIterator getEdgeIterator(int v);
 

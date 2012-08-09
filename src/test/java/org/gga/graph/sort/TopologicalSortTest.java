@@ -1,7 +1,7 @@
 package org.gga.graph.sort;
 
 import junit.framework.TestCase;
-import org.gga.graph.Graph;
+import org.gga.graph.MutableGraph;
 import org.gga.graph.impl.SparseGraphImpl;
 
 /**
@@ -9,7 +9,7 @@ import org.gga.graph.impl.SparseGraphImpl;
  */
 public class TopologicalSortTest extends TestCase {
     public void testSmoke() throws Exception {
-        Graph g = new SparseGraphImpl(4, true);
+        MutableGraph g = new SparseGraphImpl(4, true);
 
         g.insert(2, 1);
         g.insert(2, 3);

@@ -2,6 +2,7 @@ package org.gga.graph.transform;
 
 import org.gga.graph.Edge;
 import org.gga.graph.Graph;
+import org.gga.graph.MutableGraph;
 import org.gga.graph.impl.DataGraphImpl;
 import org.gga.graph.impl.SparseGraphImpl;
 import org.gga.graph.maps.DataGraph;
@@ -31,7 +32,7 @@ public class Subgraph {
             }
         }
 
-        Graph result = new SparseGraphImpl(newSize, g.isDirected());
+        MutableGraph result = new SparseGraphImpl(newSize, g.isDirected());
 
         for (int v = 0; v < g.V(); v++) {
             if (!verticesToInclude[v]) continue;

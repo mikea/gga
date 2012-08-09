@@ -3,6 +3,7 @@ package org.gga.graph.search.dfs;
 import junit.framework.TestCase;
 import org.gga.graph.Edge;
 import org.gga.graph.Graph;
+import org.gga.graph.MutableGraph;
 import org.gga.graph.impl.SparseGraphImpl;
 import org.gga.graph.util.ArrayUtil;
 
@@ -14,7 +15,7 @@ import java.util.List;
  */
 public class DfsSearchTest extends TestCase {
     public void testUnidirectedEventsOrder() throws Exception {
-        Graph graph = new SparseGraphImpl(8, false);
+        MutableGraph graph = new SparseGraphImpl(8, false);
                                  
         graph.insert(0, 2);
         graph.insert(0, 5);
@@ -82,7 +83,7 @@ public class DfsSearchTest extends TestCase {
     }
 
     public void testUnidirectedTimeStamper() throws Exception {
-        Graph graph = new SparseGraphImpl(8, false);
+        MutableGraph graph = new SparseGraphImpl(8, false);
 
         graph.insert(0, 2);
         graph.insert(0, 5);
@@ -102,7 +103,7 @@ public class DfsSearchTest extends TestCase {
     }
 
     public void testDirectedSearch() throws Exception {
-        Graph graph = new SparseGraphImpl(13, true);
+        MutableGraph graph = new SparseGraphImpl(13, true);
 
         graph.insert(0, 1);
         graph.insert(0, 5);

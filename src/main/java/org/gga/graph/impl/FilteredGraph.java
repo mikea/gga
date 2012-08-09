@@ -1,15 +1,15 @@
 package org.gga.graph.impl;
 
 import org.gga.graph.Edge;
-import org.gga.graph.Graph;
 import org.gga.graph.EdgeIterator;
+import org.gga.graph.Graph;
 import org.gga.graph.search.dfs.DepthFirstSearch;
 import org.gga.graph.search.dfs.Dfs;
 import org.gga.graph.search.dfs.DfsVisitor;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
 
 /**
  * @author mike
@@ -53,20 +53,13 @@ public class FilteredGraph implements Graph {
         return g.isDirected();
     }
 
+    @Override
     public Edge edge(int v, int w) {
         if (!vertices[v] || !vertices[w]) return null;
 
         Edge edge = g.edge(v, w);
 
         return edge != null && edges[edge.idx()] ? edge : null;
-    }
-
-    public Edge insert(int v, int w) {
-        throw new UnsupportedOperationException("Method insert not implemented in " + getClass());
-    }
-
-    public void remove(Edge e) {
-        throw new UnsupportedOperationException("Method remove not implemented in " + getClass());
     }
 
     public EdgeIterator getEdgeIterator(int v) {

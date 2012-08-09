@@ -1,6 +1,7 @@
 package org.gga.graph.io;
 
 import org.gga.graph.Graph;
+import org.gga.graph.MutableGraph;
 import org.gga.graph.impl.SparseGraphImpl;
 
 import java.io.*;
@@ -29,13 +30,13 @@ public class GraphIo {
         lineReader.close();
 
         lineReader = createReader(file);
-        Graph g = new SparseGraphImpl(n + 1, true);
+        MutableGraph g = new SparseGraphImpl(n + 1, true);
 
         while (true) {
             String s = lineReader.readLine();
-            if (s == null || s.trim().length() == 0) break;
+            if (s == null || s.trim().isEmpty()) break;
 
-            int idx = s.indexOf(":");
+            int idx = s.indexOf(':');
             String iv = s.substring(0, idx);
             int v = Integer.valueOf(iv);
 

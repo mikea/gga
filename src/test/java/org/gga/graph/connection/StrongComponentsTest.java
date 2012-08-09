@@ -1,7 +1,7 @@
 package org.gga.graph.connection;
 
 import junit.framework.TestCase;
-import org.gga.graph.Graph;
+import org.gga.graph.MutableGraph;
 import org.gga.graph.impl.SparseGraphImpl;
 import org.gga.graph.util.ArrayUtil;
 
@@ -11,7 +11,7 @@ import org.gga.graph.util.ArrayUtil;
 public class StrongComponentsTest extends TestCase {
 
     public void testStrongComponents() throws Exception {
-        Graph graph = new SparseGraphImpl(13, true);
+        MutableGraph graph = new SparseGraphImpl(13, true);
                       
         graph.insert(0, 1);
         graph.insert(0, 5);
