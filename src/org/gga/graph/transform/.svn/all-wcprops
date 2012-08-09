@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/24/trunk/src/org/gga/graph/transform
+END
+Morph.java
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/24/trunk/src/org/gga/graph/transform/Morph.java
+END
+Subgraph.java
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/20/trunk/src/org/gga/graph/transform/Subgraph.java
+END
+Reverse.java
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/20/trunk/src/org/gga/graph/transform/Reverse.java
+END
