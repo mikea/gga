@@ -6,8 +6,6 @@ import org.gga.graph.Graph;
 import org.gga.graph.search.dfs.AbstractDfsVisitor;
 import org.gga.graph.util.IntStack;
 
-import static org.gga.graph.search.dfs.DepthFirstSearch.depthFirstSearch;
-
 /**
  * @author mike
  */
@@ -27,19 +25,20 @@ public class StrongComponents {
 
 
     private static class TarjanSccVisitor extends AbstractDfsVisitor {
-        private int[] rootMap;
-        private int[] componentMap;
-        private int[] discoverTime;
+        private final int[] rootMap;
+        private final int[] componentMap;
+        private final int[] discoverTime;
         private int dfsTime = 0;
         private int currentComponent = 0;
-        private IntStack stack = new IntStack();
+        private final IntStack stack = new IntStack();
 
-        public TarjanSccVisitor(int[] rootMap, int[] componentMap, int[] discoverTime) {
+        private TarjanSccVisitor(int[] rootMap, int[] componentMap, int[] discoverTime) {
             this.rootMap = rootMap;
             this.componentMap = componentMap;
             this.discoverTime = discoverTime;
         }
 
+        @Override
         public void discoverVertex(int v, Graph graph) {
             rootMap[v] = v;
             componentMap[v] = Integer.MAX_VALUE;
@@ -47,6 +46,7 @@ public class StrongComponents {
             stack.push(v);
         }
 
+        @Override
         public void finishVertex(int v, Graph graph) {
             for (Edge e : graph.getEdges(v)) {
                 int w = e.other(v);

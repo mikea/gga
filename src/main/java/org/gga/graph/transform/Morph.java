@@ -31,7 +31,7 @@ public class Morph {
         newSize++;
         checkState(newSize > 0);
 
-        Set<Pair<Integer, Integer>> edges = new HashSet<Pair<Integer, Integer>>();
+        Collection<Pair<Integer, Integer>> edges = new HashSet<Pair<Integer, Integer>>();
         MutableGraph result = new SparseGraphImpl(newSize, g.isDirected());
 
         for (int v = 0; v < g.V(); v++) {
@@ -85,7 +85,7 @@ public class Morph {
         return result;
     }
 
-    @SuppressWarnings({"unchecked"})
+    @SuppressWarnings("unchecked")
     public static <N, E, N1, E1> DataGraph<N1, E1> morph(
             DataGraph<N, E> g,
             Function<N, N1> nodeMap,

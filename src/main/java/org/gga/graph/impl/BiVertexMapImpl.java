@@ -2,20 +2,23 @@ package org.gga.graph.impl;
 
 import org.gga.graph.maps.BiVertexMap;
 
-import java.util.Map;
+import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author mike
  */
 public class BiVertexMapImpl<V> implements BiVertexMap<V> {
-    private Object[] data = new Object[0];
-    private Map<V, Integer> map = new HashMap<V, Integer>();
+    private Object[] data = new Object[10];
+    private final Map<V, Integer> map = new HashMap<V, Integer>();
 
+    @Override
     public int getVertex(V data) {
         return map.get(data);
     }
 
+    @Override
     public void put(int v, V data) {
         map.put(data, v);
 
@@ -28,7 +31,12 @@ public class BiVertexMapImpl<V> implements BiVertexMap<V> {
         this.data[v] = data;
     }
 
+    @Nullable
+    @Override
     public V get(int v) {
+        if (v >= data.length) {
+            return null;
+        }
         return (V) data[v];
     }
 }

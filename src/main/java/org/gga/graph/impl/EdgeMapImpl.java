@@ -1,7 +1,9 @@
 package org.gga.graph.impl;
 
-import org.gga.graph.maps.EdgeMap;
 import org.gga.graph.Edge;
+import org.gga.graph.maps.EdgeMap;
+
+import javax.annotation.Nullable;
 
 /**
  * @author mike
@@ -9,6 +11,7 @@ import org.gga.graph.Edge;
 public class EdgeMapImpl<E> implements EdgeMap<E> {
     private Object[] data = new Object[10];
 
+    @Override
     public void put(Edge e, E data) {
         int idx = e.idx();
 
@@ -21,11 +24,13 @@ public class EdgeMapImpl<E> implements EdgeMap<E> {
         this.data[idx] = data;
     }
 
-    @SuppressWarnings({"unchecked"})
+    @Nullable
+    @Override
+    @SuppressWarnings("unchecked")
     public E get(Edge e) {
         int idx = e.idx();
 
-        if (idx >= this.data.length) {
+        if (idx >= data.length) {
             return null;
         }
 

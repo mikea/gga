@@ -19,14 +19,13 @@ public class Pair<S, T> {
         Pair pair = (Pair) o;
 
         if (first != null ? !first.equals(pair.first) : pair.first != null) return false;
-        if (second != null ? !second.equals(pair.second) : pair.second != null) return false;
+        return !(second != null ? !second.equals(pair.second) : pair.second != null);
 
-        return true;
     }
 
     public int hashCode() {
         int result;
-        result = (first != null ? first.hashCode() : 0);
+        result = first != null ? first.hashCode() : 0;
         result = 31 * result + (second != null ? second.hashCode() : 0);
         return result;
     }

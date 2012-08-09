@@ -20,25 +20,25 @@ import static com.google.common.base.Preconditions.checkState;
 public class PushRelabelMaxFlow {
     private static final int ALPHA = 6;
     private static final int BETA = 12;
-    private static double GLOBAL_UPDATE_FREQ = 0.5;
+    private static final double GLOBAL_UPDATE_FREQ = 0.5;
 
-    private Graph g;
-    private Graph reverseGraph;
-    private int src;
-    private int sink;
+    private final Graph g;
+    private final Graph reverseGraph;
+    private final int src;
+    private final int sink;
 
-    private int[] residualCapacity;
-    private int[] distance;
-    private int[] excessFlow;
-    private Layer[] layers;
+    private final int[] residualCapacity;
+    private final int[] distance;
+    private final int[] excessFlow;
+    private final Layer[] layers;
 
-    private EdgeIterator[] current;
-    private int nm;
+    private final EdgeIterator[] current;
+    private final int nm;
     private int maxDistance;
     private int maxActive;
     private int minActive;
     private long workSinceLastUpdate;
-    private int n;
+    private final int n;
 
     public PushRelabelMaxFlow(Graph g, Graph reverseGraph, int[] capacity, int src, int sink) {
         this.reverseGraph = reverseGraph;
@@ -290,6 +290,7 @@ public class PushRelabelMaxFlow {
         minActive = n;
 
         BreadthFirstSearch.breadthFirstSearch(reverseGraph, new AbstractBfsVisitor() {
+            @Override
             public void treeEdge(Edge e, Graph g) {
                 int v = e.v();
                 int w = e.w();

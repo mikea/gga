@@ -21,7 +21,7 @@ public class GraphIo {
         while (true) {
             String s = lineReader.readLine();
 
-            if (s == null || s.trim().length() == 0) break;
+            if (s == null || s.trim().isEmpty()) break;
 
             String idx = s.substring(0, s.indexOf(":"));
             n = Math.max(n, Integer.valueOf(idx));

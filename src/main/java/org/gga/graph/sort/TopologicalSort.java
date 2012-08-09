@@ -4,7 +4,6 @@ import org.gga.graph.Edge;
 import org.gga.graph.Graph;
 import org.gga.graph.exceptions.NotADagException;
 import org.gga.graph.search.dfs.AbstractDfsVisitor;
-import org.gga.graph.search.dfs.DepthFirstSearch;
 
 /**
  * @author mike.aizatsky

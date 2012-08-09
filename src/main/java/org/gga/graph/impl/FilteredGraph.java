@@ -15,9 +15,9 @@ import java.util.List;
  * @author mike
  */
 public class FilteredGraph implements Graph {
-    private boolean[] vertices;
-    private boolean[] edges;
-    private Graph g;
+    private final boolean[] vertices;
+    private final boolean[] edges;
+    private final Graph g;
 
 
     public FilteredGraph(Graph g, GraphFilter filter) {
@@ -41,14 +41,17 @@ public class FilteredGraph implements Graph {
         this.edges = edges;
     }
 
+    @Override
     public int V() {
         return g.V();
     }
 
+    @Override
     public int E() {
         return g.E();
     }
 
+    @Override
     public boolean isDirected() {
         return g.isDirected();
     }
@@ -62,10 +65,12 @@ public class FilteredGraph implements Graph {
         return edge != null && edges[edge.idx()] ? edge : null;
     }
 
+    @Override
     public EdgeIterator getEdgeIterator(int v) {
         throw new UnsupportedOperationException("Method getEdgeIterator not implemented in " + getClass());
     }
 
+    @Override
     public Iterator<Edge> getEdgesIterator(int v) {
         if (!vertices[v]) return new SparseGraphImpl.EmptyIterator<Edge>();
 
@@ -88,6 +93,7 @@ public class FilteredGraph implements Graph {
         };
     }
 
+    @Override
     public Iterable<Edge> getEdges(final int v) {
         return new Iterable<Edge>() {
             @Override

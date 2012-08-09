@@ -5,7 +5,6 @@ package org.gga.graph.exceptions;
  */
 public class NotADagException extends RuntimeException {
     public NotADagException() {
-        super();
     }
 
     public NotADagException(String s) {

@@ -4,8 +4,8 @@ package org.gga.graph;
  * @author mike
  */
 public class Edge {
-    private int v;
-    private int w;
+    private final int v;
+    private final int w;
     private int idx;
 
     public Edge(int v, int w) {
@@ -14,15 +14,15 @@ public class Edge {
     }
 
     public int v() {
-        return this.v;
+        return v;
     }
 
     public int w() {
-        return this.w;
+        return w;
     }
 
     public int idx() {
-        return this.idx;
+        return idx;
     }
 
     public void setIdx(int idx) {

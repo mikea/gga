@@ -16,7 +16,7 @@ import java.util.Iterator;
 public class SparseGraphImpl implements MutableGraph {
     private final int V;
     private int E = 0;
-    private boolean isDigraph;
+    private final boolean isDigraph;
     private final Edge[][] edges;
 
     public SparseGraphImpl(final int v, final boolean isDigraph) {

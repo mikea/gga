@@ -7,6 +7,8 @@ import org.gga.graph.maps.BiVertexMap;
 import org.gga.graph.maps.DataGraph;
 import org.gga.graph.maps.EdgeMap;
 
+import javax.annotation.Nullable;
+
 /**
  * @author mike
  */
@@ -30,12 +32,14 @@ public class DataGraphImpl<N, E> implements DataGraph<N, E> {
         return graph.isDirected();
     }
 
+    @Nullable
     @Override
     public E edge(N n1, N n2) {
         Edge edge = graph.edge(vertices.getVertex(n1), vertices.getVertex(n2));
         return edge != null ? edges.get(edge) : null;
     }
 
+    @Nullable
     @Override
     public E edge(final int v1, final int v2) {
         Edge edge = graph.edge(v1, v2);
