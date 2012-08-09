@@ -23,6 +23,12 @@ public class EdgeMapImpl<E> implements EdgeMap<E> {
 
     @SuppressWarnings({"unchecked"})
     public E get(Edge e) {
-        return (E) data[e.idx()];
+        int idx = e.idx();
+
+        if (idx >= this.data.length) {
+            return null;
+        }
+
+        return (E) data[idx];
     }
 }
