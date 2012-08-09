@@ -31,5 +31,6 @@ public interface Graph extends HasDfs {
 
     EdgeIterator getEdgeIterator(int v);
 
-    Iterator<Edge> getEdges(int v);
+    Iterator<Edge> getEdgesIterator(int v);
+    Iterable<Edge> getEdges(int v);
 }

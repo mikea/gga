@@ -128,12 +128,22 @@ public class SparseGraphImpl implements Graph {
         }
     }
 
-    public Iterator<Edge> getEdges(final int v) {
+    public Iterator<Edge> getEdgesIterator(final int v) {
         final Edge[] edges = myEdges[v];
 
         if (edges == null) return new EmptyIterator<Edge>();
 
         return getEdges(edges);
+    }
+
+    @Override
+    public Iterable<Edge> getEdges(final int v) {
+        return new Iterable<Edge>() {
+            @Override
+            public Iterator<Edge> iterator() {
+                return getEdgesIterator(v);
+            }
+        };
     }
 
     static Iterator<Edge> getEdges(final Edge[] edges) {

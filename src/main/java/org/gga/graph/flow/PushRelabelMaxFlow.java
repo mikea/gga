@@ -9,8 +9,6 @@ import org.gga.graph.search.bfs.BreadthFirstSearch;
 import org.gga.graph.transform.Reverse;
 import org.gga.graph.util.IntStack;
 
-import java.util.Iterator;
-
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 
@@ -79,8 +77,7 @@ public class PushRelabelMaxFlow {
         excessFlow[src] = Integer.MAX_VALUE;
 
 
-        for (Iterator<Edge> i = g.getEdges(src); i.hasNext();) {
-            Edge edge = i.next();
+        for (Edge edge : g.getEdges(src)) {
             int w = edge.w();
 
             excessFlow[w] += residualCapacity[edge.idx()];
@@ -110,9 +107,8 @@ public class PushRelabelMaxFlow {
 
         int minDist = n;
 
-        for (Iterator<Edge> i = g.getEdges(v); i.hasNext();) {
+        for (Edge e : g.getEdges(v)) {
             workSinceLastUpdate++;
-            Edge e = i.next();
             int w = e.other(v);
 
             if (distance[w] < minDist && isResidual(e)) {

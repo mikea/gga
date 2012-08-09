@@ -6,7 +6,6 @@ import org.gga.graph.util.ColorValue;
 import org.gga.graph.util.IntQueue;
 
 import java.util.Arrays;
-import java.util.Iterator;
 
 /**
  * @author mike
@@ -37,8 +36,7 @@ public class BreadthFirstSearch {
             int v = q.pop();
             visitor.examineVertex(v, g);
 
-            for (Iterator<Edge> i = g.getEdges(v); i.hasNext();) {
-                Edge e = i.next();
+            for (Edge e : g.getEdges(v)) {
                 visitor.examineEdge(e, g);
 
                 int w = e.w();

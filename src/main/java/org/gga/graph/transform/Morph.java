@@ -34,8 +34,7 @@ public class Morph {
         Graph result = new SparseGraphImpl(newSize, g.isDirected());
 
         for (int v = 0; v < g.V(); v++) {
-            for (Iterator<Edge> i = g.getEdges(v); i.hasNext();) {
-                Edge e = i.next();
+            for (Edge e : g.getEdges(v)) {
                 int w = e.w();
 
                 int v1 = vertexMap[v];
@@ -72,8 +71,7 @@ public class Morph {
         }
 
         for (int v = 0; v < g.V(); v++) {
-            for (Iterator<Edge> i = g.getIntGraph().getEdges(v); i.hasNext();) {
-                Edge e = i.next();
+            for (Edge e : g.getIntGraph().getEdges(v)) {
                 int w = e.w();
 
                 int v1 = vertexMap[v];
@@ -111,8 +109,7 @@ public class Morph {
                 newEdges.put(n1, edges);
             }
 
-            for (Iterator<Edge> i = g.getIntGraph().getEdges(v); i.hasNext(); ) {
-                Edge e = i.next();
+            for (Edge e : g.getIntGraph().getEdges(v)) {
                 int w = e.w();
 
 

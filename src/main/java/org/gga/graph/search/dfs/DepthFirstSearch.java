@@ -4,8 +4,6 @@ import org.gga.graph.Edge;
 import org.gga.graph.Graph;
 import org.gga.graph.util.ColorValue;
 
-import java.util.Iterator;
-
 /**
  * @author mike
  */
@@ -40,8 +38,7 @@ public class DepthFirstSearch {
 
         visitor.discoverVertex(v, graph);
 
-        for (Iterator<Edge> i = graph.getEdges(v); i.hasNext();) {
-            Edge e = i.next();
+        for (Edge e : graph.getEdges(v)) {
             int w = e.other(v);
 
             visitor.examineEdge(e, graph);

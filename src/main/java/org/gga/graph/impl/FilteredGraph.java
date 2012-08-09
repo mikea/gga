@@ -29,9 +29,7 @@ public class FilteredGraph implements Graph {
         for (int v = 0; v < g.V(); v++) {
             vertices[v] = filter.acceptVertex(v);
 
-            for (Iterator<Edge> i = g.getEdges(v); i.hasNext();) {
-                Edge e = i.next();
-
+            for (Edge e : g.getEdges(v)) {
                 edges[e.idx()] = filter.acceptEdge(e);
             }
         }
@@ -75,13 +73,12 @@ public class FilteredGraph implements Graph {
         throw new UnsupportedOperationException("Method getEdgeIterator not implemented in " + getClass());
     }
 
-    public Iterator<Edge> getEdges(int v) {
+    public Iterator<Edge> getEdgesIterator(int v) {
         if (!vertices[v]) return new SparseGraphImpl.EmptyIterator<Edge>();
 
         List<Edge> l = new ArrayList<Edge>();
 
-        for (Iterator<Edge> i = g.getEdges(v); i.hasNext();) {
-            Edge edge = i.next();
+        for (Edge edge : g.getEdges(v)) {
             if (edges[edge.idx()] && vertices[edge.w()]) l.add(edge);
         }
 
@@ -94,6 +91,15 @@ public class FilteredGraph implements Graph {
             @Override
             public void depthFirstSearch(DfsVisitor visitor) {
                 DepthFirstSearch.depthFirstSearch(FilteredGraph.this, visitor);
+            }
+        };
+    }
+
+    public Iterable<Edge> getEdges(final int v) {
+        return new Iterable<Edge>() {
+            @Override
+            public Iterator<Edge> iterator() {
+                return getEdgesIterator(v);
             }
         };
     }

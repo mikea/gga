@@ -6,8 +6,6 @@ import org.gga.graph.Graph;
 import org.gga.graph.search.dfs.AbstractDfsVisitor;
 import org.gga.graph.util.IntStack;
 
-import java.util.Iterator;
-
 import static org.gga.graph.search.dfs.DepthFirstSearch.depthFirstSearch;
 
 /**
@@ -50,8 +48,7 @@ public class StrongComponents {
         }
 
         public void finishVertex(int v, Graph graph) {
-            for (Iterator<Edge> i = graph.getEdges(v); i.hasNext();) {
-                Edge e = i.next();
+            for (Edge e : graph.getEdges(v)) {
                 int w = e.other(v);
 
                 if (componentMap[w] == Integer.MAX_VALUE) {

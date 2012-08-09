@@ -10,7 +10,6 @@ import org.gga.graph.util.IntBooleanFunction;
 import org.gga.graph.util.Pair;
 
 import java.util.Arrays;
-import java.util.Iterator;
 
 /**
  * @author mike
@@ -36,8 +35,7 @@ public class Subgraph {
 
         for (int v = 0; v < g.V(); v++) {
             if (!verticesToInclude[v]) continue;
-            for (Iterator<Edge> i = g.getEdges(v); i.hasNext();) {
-                Edge e = i.next();
+            for (Edge e : g.getEdges(v)) {
                 if (!verticesToInclude[e.w()]) continue;
 
                 result.insert(verticesMap[e.v()], verticesMap[e.w()]);
@@ -83,8 +81,7 @@ public class Subgraph {
 
         for (int v = 0; v < g.V(); v++) {
             if (verticesMap[v] < 0) continue;
-            for (Iterator<Edge> i = g.getIntGraph().getEdges(v); i.hasNext();) {
-                Edge e = i.next();
+            for (Edge e : g.getIntGraph().getEdges(v)) {
                 if (verticesMap[e.w()] < 0) continue;
 
                 result.insert(
