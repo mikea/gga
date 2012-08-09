@@ -13,34 +13,38 @@ import java.util.Iterator;
  * @author mike
  */
 public class SparseGraphImpl implements Graph {
-    private int myV;
-    private int myE;
-    private boolean myIsDigraph;
-    private Edge[][] myEdges;
+    private final int V;
+    private int E = 0;
+    private boolean isDigraph;
+    private final Edge[][] edges;
 
     public SparseGraphImpl(final int v, final boolean isDigraph) {
-        myV = v;
-        myIsDigraph = isDigraph;
-        myEdges = new Edge[v][];
+        this.V = v;
+        this.isDigraph = isDigraph;
+        edges = new Edge[v][];
     }
 
+    @Override
     public int V() {
-        return myV;
+        return V;
     }
 
+    @Override
     public int E() {
-        return myE;
+        return E;
     }
 
+    @Override
     public boolean isDirected() {
-        return myIsDigraph;
+        return isDigraph;
     }
 
+    @Override
     public Edge edge(final int v, final int w) {
-        Edge[] edges = myEdges[v];
-        if (edges == null) return null;
+        Edge[] outEdges = edges[v];
+        if (outEdges == null) return null;
 
-        for (Edge edge : edges) {
+        for (Edge edge : outEdges) {
             if (edge != null && edge.w() == w) return edge;
         }
 
@@ -48,6 +52,7 @@ public class SparseGraphImpl implements Graph {
     }
 
 
+    @Override
     public Edge insert(int v, int w) {
         Edge edge = new Edge(v, w);
 
@@ -57,83 +62,85 @@ public class SparseGraphImpl implements Graph {
     }
 
     private void _insert(final Edge e) {
-        e.setIdx(myE);
+        e.setIdx(E);
         _insert(e, e.v());
 
-        if (!myIsDigraph) {
+        if (!isDigraph) {
             _insert(e, e.w());
         }
 
-        myE++;
+        E++;
     }
 
     private void _insert(Edge e, int v) {
-        Edge[] edges = myEdges[v];
+        Edge[] outEdges = edges[v];
 
-        if (edges == null) {
-            edges = new Edge[1];
-            myEdges[v] = edges;
+        if (outEdges == null) {
+            outEdges = new Edge[1];
+            edges[v] = outEdges;
         }
 
-        for (int i = 0; i < edges.length; i++) {
-            Edge edge = edges[i];
+        for (int i = 0; i < outEdges.length; i++) {
+            Edge edge = outEdges[i];
             if (edge == null) {
-                edges[i] = e;
+                outEdges[i] = e;
                 return;
             }
         }
 
-        myEdges[v] = new Edge[edges.length * 2];
-        System.arraycopy(edges, 0, myEdges[v], 0, edges.length);
+        edges[v] = new Edge[outEdges.length * 2];
+        System.arraycopy(outEdges, 0, edges[v], 0, outEdges.length);
 
         _insert(e, v);
     }
 
+    @Override
     public void remove(final Edge e) {
         _remove(e, e.v());
 
-        if (!myIsDigraph) {
+        if (!isDigraph) {
             _remove(e, e.w());
         }
 
-        myE--;
+        E--;
     }
 
+    @Override
     public EdgeIterator getEdgeIterator(int v) {
-        final Edge[] edges = myEdges[v];
+        final Edge[] outEdges = edges[v];
 
-        if (edges == null) return new MyEmptyEdgeIterator();
+        if (outEdges == null) return new MyEmptyEdgeIterator();
 
         int first = -1;
 
-        for (int i = 0; i < edges.length; i++) {
-            Edge edge = edges[i];
+        for (int i = 0; i < outEdges.length; i++) {
+            Edge edge = outEdges[i];
             if (edge != null) {
                 first = i;
                 break;
             }
         }
 
-        return new MyEdgeIterator(first, edges);
+        return new MyEdgeIterator(first, outEdges);
     }
 
     private void _remove(Edge e, int v) {
-        Edge[] edges = myEdges[v];
-        for (int i = 0; i < edges.length; i++) {
-            Edge edge = edges[i];
+        Edge[] outEdges = edges[v];
+        for (int i = 0; i < outEdges.length; i++) {
+            Edge edge = outEdges[i];
             if (edge == e) {
-                edges[i] = null;
+                outEdges[i] = null;
                 return;
             }
         }
     }
 
     public Iterator<Edge> getEdgesIterator(final int v) {
-        final Edge[] edges = myEdges[v];
+        final Edge[] outEdges = edges[v];
 
-        if (edges == null) return new EmptyIterator<Edge>();
+        if (outEdges == null) return new EmptyIterator<Edge>();
 
-        return getEdges(edges);
+        return getEdges(outEdges);
     }
 
     @Override
@@ -158,14 +165,16 @@ public class SparseGraphImpl implements Graph {
         }
 
 
-        final int _f = first;
+        final int finalFirst = first;
         return new Iterator<Edge>() {
-            int curEdge = _f;
+            private int curEdge = finalFirst;
 
+            @Override
             public boolean hasNext() {
                 return curEdge >= 0 && edges[curEdge] != null;
             }
 
+            @Override
             public Edge next() {
                 Edge e = edges[curEdge];
 
@@ -185,6 +194,7 @@ public class SparseGraphImpl implements Graph {
                 return e;
             }
 
+            @Override
             public void remove() {
                 throw new UnsupportedOperationException("Method remove not implemented in ");
             }
@@ -202,37 +212,42 @@ public class SparseGraphImpl implements Graph {
     }
 
     static class EmptyIterator<E extends Edge> implements Iterator<E> {
+        @Override
         public boolean hasNext() {
             return false;
         }
 
+        @Override
         public E next() {
             throw new UnsupportedOperationException("Method next not implemented in " + getClass());
         }
 
+        @Override
         public void remove() {
             throw new UnsupportedOperationException("Method remove not implemented in " + getClass());
         }
     }
 
-    private class MyEdgeIterator implements EdgeIterator {
-        int curEdge;
+    private static class MyEdgeIterator implements EdgeIterator {
+        private int curEdge;
         private final Edge[] edges;
 
-        public MyEdgeIterator(int first, Edge[] edges) {
+        private MyEdgeIterator(int first, Edge[] edges) {
             this.edges = edges;
             curEdge = first;
         }
 
-        @SuppressWarnings({"CloneDoesntCallSuperClone"})
+        @Override
         public EdgeIterator clone() {
             return new MyEdgeIterator(curEdge, edges);
         }
 
+        @Override
         public Edge edge() {
             return edges[curEdge];
         }
 
+        @Override
         public void advance() {
             int next = -1;
             for (int i = curEdge + 1; i < edges.length; i++) {
@@ -246,6 +261,7 @@ public class SparseGraphImpl implements Graph {
             curEdge = next;
         }
 
+        @Override
         public boolean hasNext() {
             if (isAfterEnd()) return false;
             for (int i = curEdge + 1; i < edges.length; i++) {
@@ -258,30 +274,35 @@ public class SparseGraphImpl implements Graph {
             return false;
         }
 
+        @Override
         public boolean isAfterEnd() {
             return curEdge < 0;
         }
     }
 
     private class MyEmptyEdgeIterator implements EdgeIterator {
-        @SuppressWarnings({"CloneDoesntCallSuperClone"})
+        @SuppressWarnings("CloneDoesntCallSuperClone")
         @Override
         public EdgeIterator clone() {
             return new MyEmptyEdgeIterator();
         }
 
+        @Override
         public Edge edge() {
             throw new UnsupportedOperationException("Method edge not implemented in " + getClass());
         }
 
+        @Override
         public void advance() {
             throw new UnsupportedOperationException("Method advance not implemented in " + getClass());
         }
 
+        @Override
         public boolean hasNext() {
-            return true;
+            return false;
         }
 
+        @Override
         public boolean isAfterEnd() {
             throw new UnsupportedOperationException("Method isAfterEnd not implemented in " + getClass());
         }

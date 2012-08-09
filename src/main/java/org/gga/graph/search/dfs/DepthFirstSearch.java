@@ -8,6 +8,9 @@ import org.gga.graph.util.ColorValue;
  * @author mike
  */
 public class DepthFirstSearch {
+    private DepthFirstSearch() {
+    }
+
     public static void depthFirstSearch(Graph graph, DfsVisitor visitor, short[] colorMap) {
         depthFirstSearch(graph, visitor, colorMap, 0);
     }
@@ -23,17 +26,17 @@ public class DepthFirstSearch {
         }
 
         visitor.startVertex(firstVertex, graph);
-        _dfs(graph, visitor, colorMap, firstVertex);
+        dfsImpl(graph, visitor, colorMap, firstVertex);
 
         for (int v = 0; v < graph.V(); v++) {
             if (colorMap[v] == ColorValue.WHITE) {
                 visitor.startVertex(v, graph);
-                _dfs(graph, visitor, colorMap, v);
+                dfsImpl(graph, visitor, colorMap, v);
             }
         }
     }
 
-    private static void _dfs(Graph graph, DfsVisitor visitor, short[] colorMap, int v) {
+    private static void dfsImpl(Graph graph, DfsVisitor visitor, short[] colorMap, int v) {
         colorMap[v] = ColorValue.GREY;
 
         visitor.discoverVertex(v, graph);
@@ -45,7 +48,7 @@ public class DepthFirstSearch {
 
             if (colorMap[w] == ColorValue.WHITE) {
                 visitor.treeEdge(e, graph);
-                _dfs(graph, visitor, colorMap, w);
+                dfsImpl(graph, visitor, colorMap, w);
             } else if (colorMap[w] == ColorValue.GREY) {
                 visitor.backEdge(e, graph);
             } else {
