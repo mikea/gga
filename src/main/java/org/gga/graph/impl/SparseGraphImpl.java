@@ -3,6 +3,9 @@ package org.gga.graph.impl;
 import org.gga.graph.Edge;
 import org.gga.graph.EdgeIterator;
 import org.gga.graph.Graph;
+import org.gga.graph.search.dfs.DepthFirstSearch;
+import org.gga.graph.search.dfs.Dfs;
+import org.gga.graph.search.dfs.DfsVisitor;
 
 import java.util.Iterator;
 
@@ -174,6 +177,16 @@ public class SparseGraphImpl implements Graph {
 
             public void remove() {
                 throw new UnsupportedOperationException("Method remove not implemented in ");
+            }
+        };
+    }
+
+    @Override
+    public Dfs getDfs() {
+        return new Dfs() {
+            @Override
+            public void depthFirstSearch(DfsVisitor visitor) {
+                DepthFirstSearch.depthFirstSearch(SparseGraphImpl.this, visitor);
             }
         };
     }

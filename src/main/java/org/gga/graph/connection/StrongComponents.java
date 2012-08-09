@@ -22,7 +22,7 @@ public class StrongComponents {
         Preconditions.checkArgument(graph.isDirected());
 
         TarjanSccVisitor visitor = new TarjanSccVisitor(rootMap, componentMap, new int[graph.V()]);
-        depthFirstSearch(graph, visitor);
+        graph.getDfs().depthFirstSearch(visitor);
 
         return visitor.currentComponent;
     }

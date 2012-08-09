@@ -22,7 +22,7 @@ public class DfsBenchmark extends SimpleBenchmark {
 
     public void timeEmptyVisitor(int reps) {
         for (int i = 0; i < reps; ++i) {
-            DepthFirstSearch.depthFirstSearch(graph, new AbstractDfsVisitor());
+            graph.getDfs().depthFirstSearch(new AbstractDfsVisitor());
         }
     }
 

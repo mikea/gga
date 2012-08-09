@@ -13,7 +13,7 @@ public class TopologicalSort {
     public static int[] sort(final Graph g) throws NotADagException {
         final int[] result = new int[g.V()];
 
-        DepthFirstSearch.depthFirstSearch(g, new AbstractDfsVisitor() {
+        g.getDfs().depthFirstSearch(new AbstractDfsVisitor() {
             int pos = g.V() - 1;
 
             @Override

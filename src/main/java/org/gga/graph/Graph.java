@@ -1,5 +1,7 @@
 package org.gga.graph;
 
+import org.gga.graph.search.dfs.HasDfs;
+
 import java.util.Iterator;
 
 /**
@@ -7,7 +9,7 @@ import java.util.Iterator;
  *
  * @author mike
  */
-public interface Graph {
+public interface Graph extends HasDfs {
 
     /**
      * @return number of vertices in the graph.

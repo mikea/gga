@@ -3,6 +3,9 @@ package org.gga.graph.impl;
 import org.gga.graph.Edge;
 import org.gga.graph.Graph;
 import org.gga.graph.EdgeIterator;
+import org.gga.graph.search.dfs.DepthFirstSearch;
+import org.gga.graph.search.dfs.Dfs;
+import org.gga.graph.search.dfs.DfsVisitor;
 
 import java.util.Iterator;
 import java.util.List;
@@ -83,6 +86,16 @@ public class FilteredGraph implements Graph {
         }
 
         return l.iterator();
+    }
+
+    @Override
+    public Dfs getDfs() {
+        return new Dfs() {
+            @Override
+            public void depthFirstSearch(DfsVisitor visitor) {
+                DepthFirstSearch.depthFirstSearch(FilteredGraph.this, visitor);
+            }
+        };
     }
 
     public interface GraphFilter {
