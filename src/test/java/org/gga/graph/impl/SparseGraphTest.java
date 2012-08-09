@@ -1,14 +1,14 @@
 package org.gga.graph.impl;
 
 import junit.framework.TestCase;
-import org.gga.graph.Edge;
+import org.gga.graph.Graph;
 
 /**
  * @author mike
  */
 public class SparseGraphTest extends TestCase {
     public void testDirectedInsert() throws Exception {
-        MySparseGraph graph = new MySparseGraph(10, true);
+        Graph graph = new SparseGraphImpl(10, true);
 
         graph.insert(0, 1);
         graph.insert(0, 2);
@@ -20,15 +20,5 @@ public class SparseGraphTest extends TestCase {
         assertNull(graph.edge(1, 0));
         assertNull(graph.edge(2, 0));
         assertNull(graph.edge(3, 0));
-    }
-
-    private static class MySparseGraph extends SparseGraphImpl {
-        protected MySparseGraph(final int v, final boolean isDigraph) {
-            super(v, isDigraph);
-        }
-
-        protected Edge createEdge(int v, int w) {
-            return new Edge(v, w);
-        }
     }
 }

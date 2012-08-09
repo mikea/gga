@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class DfsSearchTest extends TestCase {
     public void testUnidirectedEventsOrder() throws Exception {
-        MyGraph graph = new MyGraph(8, false);
+        Graph graph = new SparseGraphImpl(8, false);
                                  
         graph.insert(0, 2);
         graph.insert(0, 5);
@@ -82,7 +82,7 @@ public class DfsSearchTest extends TestCase {
     }
 
     public void testUnidirectedTimeStamper() throws Exception {
-        MyGraph graph = new MyGraph(8, false);
+        Graph graph = new SparseGraphImpl(8, false);
 
         graph.insert(0, 2);
         graph.insert(0, 5);
@@ -102,7 +102,7 @@ public class DfsSearchTest extends TestCase {
     }
 
     public void testDirectedSearch() throws Exception {
-        MyGraph graph = new MyGraph(13, true);
+        Graph graph = new SparseGraphImpl(13, true);
 
         graph.insert(0, 1);
         graph.insert(0, 5);
@@ -174,15 +174,4 @@ public class DfsSearchTest extends TestCase {
             events.add("finishVertex(" + v + ")");
         }
     }
-
-    private static class MyGraph extends SparseGraphImpl {
-        protected MyGraph(final int v, final boolean isDigraph) {
-            super(v, isDigraph);
-        }
-
-        protected Edge createEdge(int v, int w) {
-            return new Edge(v, w);
-        }
-    }
-
 }

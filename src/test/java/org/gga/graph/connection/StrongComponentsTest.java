@@ -1,9 +1,9 @@
 package org.gga.graph.connection;
 
+import junit.framework.TestCase;
+import org.gga.graph.Graph;
 import org.gga.graph.impl.SparseGraphImpl;
 import org.gga.graph.util.ArrayUtil;
-import org.gga.graph.Edge;
-import junit.framework.TestCase;
 
 /**
  * @author mike
@@ -11,7 +11,7 @@ import junit.framework.TestCase;
 public class StrongComponentsTest extends TestCase {
 
     public void testStrongComponents() throws Exception {
-        MySparseGraph graph = new MySparseGraph(13, true);
+        Graph graph = new SparseGraphImpl(13, true);
                       
         graph.insert(0, 1);
         graph.insert(0, 5);
@@ -44,15 +44,5 @@ public class StrongComponentsTest extends TestCase {
 
         assertEquals("[2, 0, 2, 2, 2, 2, 2, 3, 3, 1, 1, 1, 1]", ArrayUtil.arrayToString(componentMap));
         assertEquals("[0, 1, 0, 0, 0, 0, 0, 7, 7, 11, 11, 11, 11]", ArrayUtil.arrayToString(rootMap));
-    }
-
-    private static class MySparseGraph extends SparseGraphImpl {
-        protected MySparseGraph(final int v, final boolean isDigraph) {
-            super(v, isDigraph);
-        }
-
-        protected Edge createEdge(int v, int w) {
-            return new Edge(v, w);
-        }
     }
 }
