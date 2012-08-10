@@ -1,23 +1,12 @@
 package org.gga.graph.flow;
 
-import org.gga.graph.Edge;
-import org.gga.graph.EdgeIterator;
-import org.gga.graph.Graph;
-import org.gga.graph.impl.SparseGraphImpl;
-import org.gga.graph.search.bfs.AbstractBfsVisitor;
-import org.gga.graph.search.bfs.BreadthFirstSearch;
-import org.gga.graph.transform.Reverse;
-import org.gga.graph.util.IntStack;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkState;
-
 /**
  * @author mike
  */
 //see boost
 //todo: uncomment gap function & globalInstanceUpdate periodicall call
 public class PushRelabelMaxFlow {
+/*
     private static final int ALPHA = 6;
     private static final int BETA = 12;
     private static final double GLOBAL_UPDATE_FREQ = 0.5;
@@ -166,6 +155,7 @@ public class PushRelabelMaxFlow {
 
         if (endOfList) relabel(v);
 
+*/
 /*
         while (true) {
             EdgeIterator i;
@@ -205,11 +195,13 @@ public class PushRelabelMaxFlow {
                 break;
             }
         }
-*/
+*//*
+
 
 
     }
 
+*/
 /*
     private void gap(int emptyDistance) {
         int r = emptyDistance - 1; // distance of layer before current
@@ -229,7 +221,8 @@ public class PushRelabelMaxFlow {
         maxDistance = r;
         maxActive = r;
     }
-*/
+*//*
+
 
     private void addToInactiveList(int v) {
         Layer layer = layers[distance[v]];
@@ -332,9 +325,11 @@ public class PushRelabelMaxFlow {
         return maxFlow.maxPreFlow();
     }
 
+*/
 /*
     private void convertPreflowToFlow() {
             throw new UnsupportedOperationException("Method convertPreflowToFlow not implemented in " + getClass());
     }
 */
+
 }

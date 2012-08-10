@@ -96,7 +96,7 @@ public class DfsSearchTest extends TestCase {
         graph.insert(4, 6);
 
         int[] stamps = new int[8];
-        TimeStamper forwardStamper = new TimeStamper(stamps, VertexEventVisitor.VertexEvent.DISCOVER_VERTEX);
+        TimeStamper forwardStamper = new TimeStamper(stamps, VertexEvent.DISCOVER_VERTEX);
         DepthFirstSearch.depthFirstSearch(graph, forwardStamper, new short[8]);
 
         assertEquals("[0, 7, 1, 4, 3, 5, 2, 6]", ArrayUtil.arrayToString(stamps));

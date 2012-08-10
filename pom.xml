@@ -63,10 +63,8 @@
     </pluginRepositories>
 
     <build>
-<!--
         <sourceDirectory>src/main/scala</sourceDirectory>
-        <testSourceDirectory>src/test/scala</testSourceDirectory>
--->
+        <!--<testSourceDirectory>src/test/scala</testSourceDirectory>-->
 
         <plugins>
             <plugin>
@@ -103,7 +101,8 @@
                     <target>1.5</target>
                 </configuration>
             </plugin>
-        </plugins>          </build>
+        </plugins>
+    </build>
 
 </project>
 
