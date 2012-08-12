@@ -13,7 +13,7 @@ class SparseGraphImpl(v: Int, anIsDigraph: Boolean) extends MutableGraph {
   private final val nVertices: Int = v
   private var nEdges: Int = 0
   private final val isDigraph: Boolean = anIsDigraph
-  private final val edges: Array[Array[Edge]] = null
+  private final val edges: Array[Array[Edge]] = new Array[Array[Edge]](v)
 
   def V: Int = nVertices
 
@@ -167,31 +167,5 @@ object SparseGraphImpl {
     def isAfterEnd: Boolean = curEdge < 0
   }
 
-  private[impl] def getEdgesIterator(edges: Array[Edge]): Iterator[Edge] = {
-    val first = edges.indexWhere((e: Edge) => e != null)
-
-    new Iterator[Edge] {
-      private var curEdge: Int = first
-
-      def hasNext: Boolean = {
-        curEdge >= 0 && edges(curEdge) != null
-      }
-
-      def next(): Edge = {
-        val next: Int = edges.indexWhere((e: Edge) => e != null, curEdge)
-
-        if (next >= 0) {
-          curEdge = next
-          edges(curEdge)
-        } else {
-          curEdge = -1
-          null
-        }
-      }
-
-      def remove() {
-        throw new UnsupportedOperationException("Method remove not implemented in ")
-      }
-    }
-  }
+  private[impl] def getEdgesIterator(edges: Array[Edge]): Iterator[Edge] = edges.filter(_ != null).iterator
 }

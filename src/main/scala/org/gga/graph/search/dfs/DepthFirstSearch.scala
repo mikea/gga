@@ -40,8 +40,7 @@ object DepthFirstSearch {
       }
       else if (colorMap(w) == ColorValue.GREY) {
         visitor.backEdge(e, graph)
-      }
-      else {
+      } else {
         visitor.forwardOrCrossEdge(e, graph)
       }
     }
