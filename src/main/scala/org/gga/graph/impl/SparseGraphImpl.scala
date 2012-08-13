@@ -4,7 +4,8 @@ import org.gga.graph.{EdgeIterator, Edge, MutableGraph}
 import org.gga.graph.search.dfs.DepthFirstSearch
 import org.gga.graph.search.dfs.Dfs
 import org.gga.graph.search.dfs.DfsVisitor
-import org.gga.graph.impl.SparseGraphImpl.{MyEdgeIterator, EmptyIterator}
+import org.gga.graph.impl.SparseGraphImpl.EmptyIterator
+import collection.mutable
 
 /**
  * @author mike
@@ -13,7 +14,7 @@ class SparseGraphImpl(v: Int, anIsDigraph: Boolean) extends MutableGraph {
   private final val nVertices: Int = v
   private var nEdges: Int = 0
   private final val isDigraph: Boolean = anIsDigraph
-  private final val edges: Array[Array[Edge]] = new Array[Array[Edge]](v)
+  private final val edges: Array[mutable.Buffer[Edge]] = new Array[mutable.Buffer[Edge]](v)
 
   def V: Int = nVertices
 
@@ -22,7 +23,7 @@ class SparseGraphImpl(v: Int, anIsDigraph: Boolean) extends MutableGraph {
   def isDirected: Boolean = isDigraph
 
   def edge(v: Int, w: Int): Option[Edge] = {
-    val outEdges: Array[Edge] = edges(v)
+    val outEdges = edges(v)
     if (outEdges == null) None
     else outEdges.find((e: Edge) => e != null && e.w == w)
   }
@@ -43,29 +44,13 @@ class SparseGraphImpl(v: Int, anIsDigraph: Boolean) extends MutableGraph {
   }
 
   private def _insert(e: Edge, v: Int) {
-    var outEdges: Array[Edge] = edges(v)
+    var outEdges = edges(v)
     if (outEdges == null) {
-      outEdges = new Array[Edge](1)
+      outEdges = mutable.Buffer.empty
       edges(v) = outEdges
     }
-    {
-      var i: Int = 0
-      while (i < outEdges.length) {
-        {
-          val edge: Edge = outEdges(i)
-          if (edge == null) {
-            outEdges(i) = e
-            return
-          }
-        }
-        ({
-          i += 1; i
-        })
-      }
-    }
-    edges(v) = new Array[Edge](outEdges.length * 2)
-    System.arraycopy(outEdges, 0, edges(v), 0, outEdges.length)
-    _insert(e, v)
+
+    outEdges += e
   }
 
   def remove(e: Edge) {
@@ -77,20 +62,19 @@ class SparseGraphImpl(v: Int, anIsDigraph: Boolean) extends MutableGraph {
   }
 
   def getEdgeIterator(v: Int): EdgeIterator = {
-    val outEdges: Array[Edge] = edges(v)
-    new MyEdgeIterator(outEdges.indexWhere((e: Edge) => e != null), outEdges)
+    throw new UnsupportedOperationException()
+//    new MyEdgeIterator(outEdges.indexWhere((e: Edge) => e != null), outEdges)
   }
 
   private def _remove(e: Edge, v: Int) {
-    val outEdges: Array[Edge] = edges(v)
+    val outEdges = edges(v)
     val idx = outEdges.indexOf(e)
-    if (idx >= 0) outEdges(idx) = null
+    if (idx >= 0) outEdges.remove(idx)
   }
 
   def getEdgesIterator(v: Int): Iterator[Edge] = {
-    val outEdges: Array[Edge] = edges(v)
-    if (outEdges == null) return new EmptyIterator[Edge]
-    SparseGraphImpl.getEdgesIterator(outEdges)
+    val outEdges = edges(v)
+    if (outEdges == null) new EmptyIterator[Edge] else outEdges.iterator
   }
 
   def getEdges(v: Int): Iterable[Edge] = {
