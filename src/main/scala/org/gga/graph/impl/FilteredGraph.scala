@@ -29,7 +29,7 @@ class FilteredGraph(aGraph: Graph, aVertices: Array[Boolean], anEdges: Array[Boo
   def edge(v: Int, w: Int): Option[Edge] = {
     if (!verticesMap(v) || !verticesMap(w)) return None
     val edge: Edge = g.edge(v, w).get
-    if (edge != null && edges(edge.idx)) Some(edge) else None
+    if (edge != null && edges(edge.getIdx)) Some(edge) else None
   }
 
   def getEdgeIterator(v: Int): Nothing = {
@@ -39,7 +39,7 @@ class FilteredGraph(aGraph: Graph, aVertices: Array[Boolean], anEdges: Array[Boo
   def getEdgesIterator(v: Int): Iterator[Edge] = {
     if (!verticesMap(v)) return new SparseGraphImpl.EmptyIterator[Edge]
 
-    g.getEdges(v).filter((edge: Edge) => edges(edge.idx) && verticesMap(edge.w)).iterator
+    g.getEdges(v).filter((edge: Edge) => edges(edge.getIdx) && verticesMap(edge.w)).iterator
   }
 
   def getDfs: Dfs = {
@@ -77,7 +77,7 @@ object FilteredGraph {
 
     for (v <- Range(0, g.V)) {
       for (e <- g.getEdges(v)) {
-        result(e.idx()) = filter.acceptEdge(e)
+        result(e.getIdx) = filter.acceptEdge(e)
       }
     }
 

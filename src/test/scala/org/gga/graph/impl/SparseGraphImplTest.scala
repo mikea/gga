@@ -18,7 +18,6 @@ class SparseGraphImplTest extends TestCase {
   }
 
   def testDirectedInsert() {
-
     assertIsSome(graph.edge(0, 1))
     assertIsSome(graph.edge(0, 2))
     assertIsSome(graph.edge(0, 3))

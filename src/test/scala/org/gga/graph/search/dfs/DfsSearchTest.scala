@@ -5,10 +5,10 @@ import org.gga.graph.Edge
 import org.gga.graph.Graph
 import org.gga.graph.MutableGraph
 import org.gga.graph.impl.SparseGraphImpl
-import org.gga.graph.util.ArrayUtil
-import java.util.ArrayList
-import java.util.List
 import org.gga.graph.search.dfs.VertexEventVisitor.VertexEvent
+import scala.collection
+import collection.mutable
+import org.gga.graph.util.ArrayUtil
 
 /**
  * @author mike
@@ -16,38 +16,38 @@ import org.gga.graph.search.dfs.VertexEventVisitor.VertexEvent
 object DfsSearchTest {
 
   private class MyDfsVisitor extends DfsVisitor {
-    private var events: List[String] = new ArrayList[String]
+    private var events: mutable.Buffer[String] = mutable.Buffer.empty
 
     def initializeVertex(v: Int, graph: Graph) {
-      events.add("initializeVertex(" + v + ")")
+      events += "initializeVertex(" + v + ")"
     }
 
     def startVertex(v: Int, graph: Graph) {
-      events.add("startVertex(" + v + ")")
+      events += "startVertex(" + v + ")"
     }
 
     def discoverVertex(v: Int, graph: Graph) {
-      events.add("discoverVertex(" + v + ")")
+      events += ("discoverVertex(" + v + ")")
     }
 
     def examineEdge(edge: Edge, graph: Graph) {
-      events.add("examineEdge(" + edge.v + "," + edge.w + ")")
+      events += ("examineEdge(" + edge.v + "," + edge.w + ")")
     }
 
     def treeEdge(edge: Edge, graph: Graph) {
-      events.add("treeEdge(" + edge.v + "," + edge.w + ")")
+      events += ("treeEdge(" + edge.v + "," + edge.w + ")")
     }
 
     def backEdge(edge: Edge, graph: Graph) {
-      events.add("backEdge(" + edge.v + "," + edge.w + ")")
+      events += ("backEdge(" + edge.v + "," + edge.w + ")")
     }
 
     def forwardOrCrossEdge(edge: Edge, graph: Graph) {
-      events.add("forwardOrCrossEdge(" + edge.v + "," + edge.w + ")")
+      events += ("forwardOrCrossEdge(" + edge.v + "," + edge.w + ")")
     }
 
     def finishVertex(v: Int, graph: Graph) {
-      events.add("finishVertex(" + v + ")")
+      events += ("finishVertex(" + v + ")")
     }
 
     def getEvents = events
@@ -69,8 +69,8 @@ class DfsSearchTest extends TestCase {
     graph.insert(4, 6)
     val visitor: DfsSearchTest.MyDfsVisitor = new DfsSearchTest.MyDfsVisitor
     DepthFirstSearch.depthFirstSearch(graph, visitor, new Array[Short](graph.V))
-    Assert.assertEquals("[" + "initializeVertex(0), " + "initializeVertex(1), " + "initializeVertex(2), " + "initializeVertex(3), " + "initializeVertex(4), " + "initializeVertex(5), " + "initializeVertex(6), " + "initializeVertex(7), " + "startVertex(0), " + "discoverVertex(0), " + "examineEdge(0,2), " + "treeEdge(0,2), " + "discoverVertex(2), " + "examineEdge(0,2), " + "backEdge(0,2), " + "examineEdge(2,6), " + "treeEdge(2,6), " + "discoverVertex(6), " + "examineEdge(2,6), " + "backEdge(2,6), " + "examineEdge(4,6), " + "treeEdge(4,6), " + "discoverVertex(4), " + "examineEdge(3,4), " + "treeEdge(3,4), " + "discoverVertex(3), " + "examineEdge(3,4), " + "backEdge(3,4), " + "examineEdge(3,5), " + "treeEdge(3,5), " + "discoverVertex(5), " + "examineEdge(0,5), " + "backEdge(0,5), " + "examineEdge(3,5), " + "backEdge(3,5), " + "examineEdge(4,5), " + "backEdge(4,5), " + "finishVertex(5), " + "finishVertex(3), " + "examineEdge(4,5), " + "forwardOrCrossEdge(4,5), " + "examineEdge(4,6), " + "backEdge(4,6), " + "finishVertex(4), finishVertex(6), finishVertex(2), examineEdge(0,5), forwardOrCrossEdge(0,5), examineEdge(0,7), treeEdge(0,7), discoverVertex(7), examineEdge(0,7), backEdge(0,7), examineEdge(1,7), treeEdge(1,7), discoverVertex(1), examineEdge(1,7), backEdge(1,7), finishVertex(1), finishVertex(7), finishVertex(0)]",
-      visitor.getEvents.toString)
+    Assert.assertEquals("initializeVertex(0), " + "initializeVertex(1), " + "initializeVertex(2), " + "initializeVertex(3), " + "initializeVertex(4), " + "initializeVertex(5), " + "initializeVertex(6), " + "initializeVertex(7), " + "startVertex(0), " + "discoverVertex(0), " + "examineEdge(0,2), " + "treeEdge(0,2), " + "discoverVertex(2), " + "examineEdge(0,2), " + "backEdge(0,2), " + "examineEdge(2,6), " + "treeEdge(2,6), " + "discoverVertex(6), " + "examineEdge(2,6), " + "backEdge(2,6), " + "examineEdge(4,6), " + "treeEdge(4,6), " + "discoverVertex(4), " + "examineEdge(3,4), " + "treeEdge(3,4), " + "discoverVertex(3), " + "examineEdge(3,4), " + "backEdge(3,4), " + "examineEdge(3,5), " + "treeEdge(3,5), " + "discoverVertex(5), " + "examineEdge(0,5), " + "backEdge(0,5), " + "examineEdge(3,5), " + "backEdge(3,5), " + "examineEdge(4,5), " + "backEdge(4,5), " + "finishVertex(5), " + "finishVertex(3), " + "examineEdge(4,5), " + "forwardOrCrossEdge(4,5), " + "examineEdge(4,6), " + "backEdge(4,6), " + "finishVertex(4), finishVertex(6), finishVertex(2), examineEdge(0,5), forwardOrCrossEdge(0,5), examineEdge(0,7), treeEdge(0,7), discoverVertex(7), examineEdge(0,7), backEdge(0,7), examineEdge(1,7), treeEdge(1,7), discoverVertex(1), examineEdge(1,7), backEdge(1,7), finishVertex(1), finishVertex(7), finishVertex(0)",
+      visitor.getEvents.mkString(", "))
   }
 
   def testUnidirectedTimeStamper {

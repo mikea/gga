@@ -5,7 +5,12 @@
       <configuration>
         <option name="compilerLibraryLevel" value="Project" />
         <option name="compilerLibraryName" value="Maven: org.scala-lang:scala-compiler-bundle:2.9.2" />
+        <option name="deprecationWarnings" value="true" />
+        <option name="explainTypeErrors" value="true" />
+        <option name="fsc" value="true" />
         <option name="maximumHeapSize" value="1024" />
+        <option name="optimiseBytecode" value="true" />
+        <option name="uncheckedWarnings" value="true" />
         <option name="vmOptions" value="" />
       </configuration>
     </facet>

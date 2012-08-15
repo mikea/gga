@@ -28,7 +28,7 @@ trait AbstractBfsVisitor extends BfsVisitor {
   override def nonTreeEdge(e: Edge, g: Graph) {
   }
 
-  override def greyTarget(e: Edge, g: Graph) {
+  override def grayTarget(e: Edge, g: Graph) {
   }
 
   override def blackTarget(e: Edge, g: Graph) {

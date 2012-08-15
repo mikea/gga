@@ -28,7 +28,7 @@ object Subgraph {
     for (v <- g.vertices) {
       if (verticesToInclude(v)) {
         for (e <- g.getEdges(v)) {
-          if (verticesToInclude(e.w())) {
+          if (verticesToInclude(e.w)) {
             result.insert(verticesMap(e.v), verticesMap(e.w))
           }
         }
@@ -62,11 +62,11 @@ object Subgraph {
     for (v <- g.vertices) {
       if (verticesMap(v) >= 0) {
         for (e <- g.getIntGraph.getEdges(v)) {
-          if (verticesMap(e.w()) >= 0) {
+          if (verticesMap(e.w) >= 0) {
             result.insert(
                 verticesMap(e.v),
                 verticesMap(e.w),
-                g.edge(e.v(), e.w).get)
+                g.edge(e.v, e.w).get)
           }
         }
       }

@@ -9,7 +9,7 @@ import org.gga.graph.util.IntQueue
  */
 object BreadthFirstSearch {
   def breadthFirstSearch(g: Graph, visitor: BfsVisitor, colorMap: Array[Short], firstVertex: Int) {
-    g.vertices.map{visitor.initializeVertex(_, g)}
+    g.vertices.foreach{visitor.initializeVertex(_, g)}
     bfs(g, visitor, colorMap, firstVertex)
   }
 
@@ -39,7 +39,7 @@ object BreadthFirstSearch {
         else {
           visitor.nonTreeEdge(e, g)
           if (c == ColorValue.GREY) {
-            visitor.greyTarget(e, g)
+            visitor.grayTarget(e, g)
           }
           else {
             visitor.blackTarget(e, g)

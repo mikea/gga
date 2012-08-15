@@ -13,7 +13,7 @@ object Reverse {
       for (e <- src.getEdges(v)) {
         val e1: Edge = dst.insert(e.w, v)
         if (edgeMap != null) {
-          edgeMap(e1.idx) = e.idx
+          edgeMap(e1.getIdx) = e.getIdx
         }
       }
     }
