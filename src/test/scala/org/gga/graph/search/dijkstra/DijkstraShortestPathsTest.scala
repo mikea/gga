@@ -93,5 +93,13 @@ class DijkstraShortestPathsTest extends TestCase {
 
     Assert.assertEquals("[0.0, 1.05, 0.26, 0.9900000000000001, 0.38, 0.73, 1.5100000000000002, 0.6000000000000001]", ArrayUtil.arrayToString(result._1))
     Assert.assertEquals("[-1, 5, 0, 7, 0, 4, 3, 2]", ArrayUtil.arrayToString(result._2))
+
+    Assert.assertEquals("[6, -1, 6, 1, 6, 7, 3, 2]", ArrayUtil.arrayToString(DijkstraShortestPaths.dijkstraShortsPaths(graph, weights, visitor, 1)._2))
+    Assert.assertEquals("[6, 5, -1, 7, 5, 7, 3, 2]", ArrayUtil.arrayToString(DijkstraShortestPaths.dijkstraShortsPaths(graph, weights, visitor, 2)._2))
+    Assert.assertEquals("[6, 5, 6, -1, 6, 7, 3, 2]", ArrayUtil.arrayToString(DijkstraShortestPaths.dijkstraShortsPaths(graph, weights, visitor, 3)._2))
+    Assert.assertEquals("[6, 5, 6, 7, -1, 4, 3, 4]", ArrayUtil.arrayToString(DijkstraShortestPaths.dijkstraShortsPaths(graph, weights, visitor, 4)._2))
+    Assert.assertEquals("[6, 5, 6, 1, 5, -1, 3, 5]", ArrayUtil.arrayToString(DijkstraShortestPaths.dijkstraShortsPaths(graph, weights, visitor, 5)._2))
+    Assert.assertEquals("[6, 5, 6, 7, 6, 7, -1, 2]", ArrayUtil.arrayToString(DijkstraShortestPaths.dijkstraShortsPaths(graph, weights, visitor, 6)._2))
+    Assert.assertEquals("[6, 5, 6, 7, 5, 7, 3, -1]", ArrayUtil.arrayToString(DijkstraShortestPaths.dijkstraShortsPaths(graph, weights, visitor, 7)._2))
   }
 }
