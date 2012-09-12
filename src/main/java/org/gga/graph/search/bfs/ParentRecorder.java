@@ -20,4 +20,10 @@ public class ParentRecorder extends AbstractBfsVisitor {
     public void treeEdge(Edge e, Graph g) {
         parents[e.w()] = e.v();
     }
+
+    public static int[] computeParents(Graph g, int firstVertex) {
+        int[] parents = new int[g.V()];
+        BreadthFirstSearch.breadthFirstSearch(g, new ParentRecorder(parents), firstVertex);
+        return parents;
+    }
 }
