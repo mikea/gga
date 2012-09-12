@@ -62,6 +62,10 @@ public class DepthFirstSearch {
     }
 
     public static void depthFirstSearch(Graph graph, DfsVisitor visitor) {
-        depthFirstSearch(graph, visitor, new short[graph.V()]);
+        depthFirstSearch(graph, 0, visitor);
+    }
+
+    public static void depthFirstSearch(Graph graph, int v, DfsVisitor visitor) {
+        depthFirstSearch(graph, visitor, new short[graph.V()], v);
     }
 }

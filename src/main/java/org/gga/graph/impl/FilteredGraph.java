@@ -90,6 +90,11 @@ public class FilteredGraph implements Graph {
             public void depthFirstSearch(DfsVisitor visitor) {
                 DepthFirstSearch.depthFirstSearch(FilteredGraph.this, visitor);
             }
+
+            @Override
+            public void depthFirstSearch(int startVertex, DfsVisitor visitor) {
+                DepthFirstSearch.depthFirstSearch(FilteredGraph.this, startVertex, visitor);
+            }
         };
     }
 

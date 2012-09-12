@@ -211,6 +211,11 @@ public class SparseGraphImpl implements MutableGraph {
             public void depthFirstSearch(DfsVisitor visitor) {
                 DepthFirstSearch.depthFirstSearch(SparseGraphImpl.this, visitor);
             }
+
+            @Override
+            public void depthFirstSearch(int startVertex, DfsVisitor visitor) {
+                DepthFirstSearch.depthFirstSearch(SparseGraphImpl.this, startVertex, visitor);
+            }
         };
     }
 

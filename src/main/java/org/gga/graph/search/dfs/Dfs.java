@@ -5,4 +5,5 @@ package org.gga.graph.search.dfs;
  */
 public interface Dfs {
     void depthFirstSearch(DfsVisitor visitor);
+    void depthFirstSearch(int startVertex, DfsVisitor visitor);
 }
