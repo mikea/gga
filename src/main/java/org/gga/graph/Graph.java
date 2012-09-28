@@ -27,8 +27,18 @@ public interface Graph extends HasDfs {
     @Nullable
     Edge edge(int v, int w);
 
+    /**
+     * Iterate over edges out of the vertex.
+     */
     EdgeIterator getEdgeIterator(int v);
 
+    /**
+     * Iterate over edges out of the vertex.
+     */
     Iterator<Edge> getEdgesIterator(int v);
+
+    /**
+     * Iterate over edges out of the vertex.
+     */
     Iterable<Edge> getEdges(int v);
 }

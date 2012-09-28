@@ -9,6 +9,9 @@ import org.gga.graph.search.dfs.AbstractDfsVisitor;
  * @author mike.aizatsky
  */
 public class TopologicalSort {
+    /**
+     * Returns sorted vector list
+     */
     public static int[] sort(final Graph g) throws NotADagException {
         final int[] result = new int[g.V()];
 
