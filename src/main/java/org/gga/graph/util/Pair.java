@@ -29,4 +29,13 @@ public class Pair<S, T> {
         result = 31 * result + (second != null ? second.hashCode() : 0);
         return result;
     }
+
+    public static <S, T> Pair<S, T> newPairOf(S s, T t) {
+        return new Pair<S, T>(s, t);
+    }
+
+    @Override
+    public String toString() {
+        return "(" + first + ", " + second + ")";
+    }
 }

@@ -20,7 +20,7 @@ public class TopologicalSort {
 
             @Override
             public void backEdge(Edge e, Graph graph) {
-                throw new NotADagException();
+                throw new NotADagException(e.toString());
             }
 
             @Override

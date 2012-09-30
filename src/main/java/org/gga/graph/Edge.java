@@ -44,9 +44,7 @@ public class Edge {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Edge edge = (Edge) o;
-
         return v == edge.v && w == edge.w;
 
     }

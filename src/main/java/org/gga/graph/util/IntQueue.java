@@ -41,4 +41,17 @@ public class IntQueue {
         fwd++;
         return result;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder("[");
+        for (int i = fwd; i < tail; ++i) {
+            if (i > fwd) {
+                result.append(", ");
+            }
+            result.append(queue[i]);
+        }
+        result.append("]");
+        return result.toString();
+    }
 }
