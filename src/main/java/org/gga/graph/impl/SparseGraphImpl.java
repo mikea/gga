@@ -1,7 +1,9 @@
 package org.gga.graph.impl;
 
+import com.google.common.base.Preconditions;
 import org.gga.graph.Edge;
 import org.gga.graph.EdgeIterator;
+import org.gga.graph.Graph;
 import org.gga.graph.MutableGraph;
 import org.gga.graph.search.dfs.DepthFirstSearch;
 import org.gga.graph.search.dfs.Dfs;
@@ -15,14 +17,76 @@ import java.util.Iterator;
  */
 public class SparseGraphImpl implements MutableGraph {
     private final int V;
-    private int E = 0;
     private final boolean isDigraph;
     private final Edge[][] edges;
+    private int E = 0;
 
     public SparseGraphImpl(final int v, final boolean isDigraph) {
         V = v;
         this.isDigraph = isDigraph;
         edges = new Edge[v][];
+    }
+
+    public SparseGraphImpl(Graph otherGraph, boolean isDirected) {
+        Preconditions.checkState(otherGraph.isDirected());
+
+        V = otherGraph.V();
+        this.isDigraph = isDirected;
+        edges = new Edge[V][];
+
+        for (int i = 0; i < V(); ++i) {
+            for (Edge edge : otherGraph.getEdges(i)) {
+                insert(edge.v(), edge.w());
+            }
+        }
+    }
+
+    static Iterator<Edge> getEdges(final Edge[] edges) {
+        int first = -1;
+
+        for (int i = 0; i < edges.length; i++) {
+            Edge edge = edges[i];
+            if (edge != null) {
+                first = i;
+                break;
+            }
+        }
+
+
+        final int finalFirst = first;
+        return new Iterator<Edge>() {
+            private int curEdge = finalFirst;
+
+            @Override
+            public boolean hasNext() {
+                return curEdge >= 0 && edges[curEdge] != null;
+            }
+
+            @Override
+            public Edge next() {
+                Edge e = edges[curEdge];
+
+
+                int next = -1;
+                for (int i = curEdge + 1; i < edges.length; i++) {
+                    Edge edge = edges[i];
+                    if (edge != null) {
+                        next = i;
+                        break;
+                    }
+                }
+
+                curEdge = next;
+
+
+                return e;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("Method remove not implemented in ");
+            }
+        };
     }
 
     @Override
@@ -53,13 +117,10 @@ public class SparseGraphImpl implements MutableGraph {
         return null;
     }
 
-
     @Override
     public Edge insert(int v, int w) {
         Edge edge = new Edge(v, w);
-
         _insert(edge);
-
         return edge;
     }
 
@@ -92,7 +153,6 @@ public class SparseGraphImpl implements MutableGraph {
 
         edges[v] = new Edge[outEdges.length * 2];
         System.arraycopy(outEdges, 0, edges[v], 0, outEdges.length);
-
         _insert(e, v);
     }
 
@@ -156,54 +216,6 @@ public class SparseGraphImpl implements MutableGraph {
         };
     }
 
-    static Iterator<Edge> getEdges(final Edge[] edges) {
-        int first = -1;
-
-        for (int i = 0; i < edges.length; i++) {
-            Edge edge = edges[i];
-            if (edge != null) {
-                first = i;
-                break;
-            }
-        }
-
-
-        final int finalFirst = first;
-        return new Iterator<Edge>() {
-            private int curEdge = finalFirst;
-
-            @Override
-            public boolean hasNext() {
-                return curEdge >= 0 && edges[curEdge] != null;
-            }
-
-            @Override
-            public Edge next() {
-                Edge e = edges[curEdge];
-
-
-                int next = -1;
-                for (int i = curEdge + 1; i < edges.length; i++) {
-                    Edge edge = edges[i];
-                    if (edge != null) {
-                        next = i;
-                        break;
-                    }
-                }
-
-                curEdge = next;
-
-
-                return e;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("Method remove not implemented in ");
-            }
-        };
-    }
-
     @Override
     public Dfs getDfs() {
         return new Dfs() {
@@ -237,8 +249,8 @@ public class SparseGraphImpl implements MutableGraph {
     }
 
     private static class MyEdgeIterator implements EdgeIterator {
-        private int curEdge;
         private final Edge[] edges;
+        private int curEdge;
 
         private MyEdgeIterator(int first, Edge[] edges) {
             this.edges = edges;
