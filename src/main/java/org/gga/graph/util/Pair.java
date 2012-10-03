@@ -30,7 +30,7 @@ public class Pair<S, T> {
         return result;
     }
 
-    public static <S, T> Pair<S, T> newPairOf(S s, T t) {
+    public static <S, T> Pair<S, T> of(S s, T t) {
         return new Pair<S, T>(s, t);
     }
 
