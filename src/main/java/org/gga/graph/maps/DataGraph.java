@@ -15,6 +15,7 @@ public interface DataGraph<N, E> {
 
     int getIndex(N data);
 
+    @Nullable
     N getNode(int v);
 
     void setNode(int v, N data);
@@ -25,6 +26,7 @@ public interface DataGraph<N, E> {
     @Nullable
     E edge(int v1, int v2);
 
+    @Nullable
     E getEdge(Edge e);
 
     Edge insert(N n1, N n2, E e);

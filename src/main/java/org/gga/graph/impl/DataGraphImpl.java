@@ -46,13 +46,14 @@ public class DataGraphImpl<N, E> implements DataGraph<N, E> {
         return edge != null ? edges.get(edge) : null;
     }
 
+    @Nullable
     @Override
     public E getEdge(Edge e) {
         return edges.get(e);
     }
 
     @Override
-    public Edge insert(N n1, N n2, E e) {
+    public Edge insert(N n1, N n2, @Nullable E e) {
         final Edge edge = graph.insert(vertices.getVertex(n1), vertices.getVertex(n2));
         edges.put(edge, e);
         return edge;
@@ -80,6 +81,7 @@ public class DataGraphImpl<N, E> implements DataGraph<N, E> {
         return vertices.getVertex(data);
     }
 
+    @Nullable
     @Override
     public N getNode(int v) {
         return vertices.get(v);
