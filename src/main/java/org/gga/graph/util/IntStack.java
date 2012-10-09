@@ -1,6 +1,8 @@
 package org.gga.graph.util;
 
-import com.google.common.base.Preconditions;
+import com.google.common.primitives.Ints;
+
+import static com.google.common.base.Preconditions.checkState;
 
 /**
  * @author mike
@@ -10,12 +12,7 @@ public class IntStack {
     int[] stack = new int[10];
 
     public void push(int v) {
-        if (size == stack.length) {
-            int[] newStack = new int[stack.length * 2];
-            System.arraycopy(stack, 0, newStack, 0, stack.length);
-            stack = newStack;
-        }
-
+        stack = Ints.ensureCapacity(stack, size + 1, size + 1);
         stack[size] = v;
         size++;
     }
@@ -25,9 +22,9 @@ public class IntStack {
     }
 
     public int pop() {
+        checkState(!isEmpty());
         int result = stack[size - 1];
         size--;
-        Preconditions.checkState(size >= 0);
         return result;
     }
 
@@ -41,20 +38,11 @@ public class IntStack {
         }
     }
 
-    public int size() {
-        return size;
-    }
-
-    public int get(int j) {
-        Preconditions.checkState(j < size);
-        return stack[j];
-    }
-
     public void clear() {
         size = 0;
     }
 
     public String toString() {
-        return ArrayUtil.arrayToString(stack, size);
+        return Ints.asList(stack).subList(0, size).toString();
     }
 }

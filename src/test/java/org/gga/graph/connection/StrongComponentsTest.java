@@ -3,7 +3,8 @@ package org.gga.graph.connection;
 import junit.framework.TestCase;
 import org.gga.graph.MutableGraph;
 import org.gga.graph.impl.SparseGraphImpl;
-import org.gga.graph.util.ArrayUtil;
+
+import java.util.Arrays;
 
 /**
  * @author mike
@@ -42,7 +43,7 @@ public class StrongComponentsTest extends TestCase {
         
         StrongComponents.strongComponents(graph, componentMap, rootMap);
 
-        assertEquals("[2, 0, 2, 2, 2, 2, 2, 3, 3, 1, 1, 1, 1]", ArrayUtil.arrayToString(componentMap));
-        assertEquals("[0, 1, 0, 0, 0, 0, 0, 7, 7, 11, 11, 11, 11]", ArrayUtil.arrayToString(rootMap));
+        assertEquals("[2, 0, 2, 2, 2, 2, 2, 3, 3, 1, 1, 1, 1]", Arrays.toString(componentMap));
+        assertEquals("[0, 1, 0, 0, 0, 0, 0, 7, 7, 11, 11, 11, 11]", Arrays.toString(rootMap));
     }
 }

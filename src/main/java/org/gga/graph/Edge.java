@@ -50,9 +50,6 @@ public class Edge {
     }
 
     public int hashCode() {
-        int result;
-        result = v;
-        result = 31 * result + w;
-        return result;
+        return v * 31 + w;
     }
 }

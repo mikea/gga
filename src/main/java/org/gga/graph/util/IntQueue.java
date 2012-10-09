@@ -1,6 +1,8 @@
 package org.gga.graph.util;
 
-import com.google.common.base.Preconditions;
+import com.google.common.primitives.Ints;
+
+import static com.google.common.base.Preconditions.checkState;
 
 /**
  * @author mike
@@ -36,7 +38,7 @@ public class IntQueue {
     }
 
     public int pop() {
-        Preconditions.checkState(!isEmpty());
+        checkState(!isEmpty());
         int result = queue[fwd];
         fwd++;
         return result;
@@ -44,14 +46,6 @@ public class IntQueue {
 
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder("[");
-        for (int i = fwd; i < tail; ++i) {
-            if (i > fwd) {
-                result.append(", ");
-            }
-            result.append(queue[i]);
-        }
-        result.append("]");
-        return result.toString();
+        return Ints.asList(queue).subList(fwd, tail).toString();
     }
 }

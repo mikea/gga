@@ -5,9 +5,9 @@ import org.gga.graph.Edge;
 import org.gga.graph.Graph;
 import org.gga.graph.MutableGraph;
 import org.gga.graph.impl.SparseGraphImpl;
-import org.gga.graph.util.ArrayUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -99,7 +99,7 @@ public class DfsSearchTest extends TestCase {
         TimeStamper forwardStamper = new TimeStamper(stamps, VertexEventVisitor.VertexEvent.DISCOVER_VERTEX);
         DepthFirstSearch.depthFirstSearch(graph, forwardStamper, new short[8]);
 
-        assertEquals("[0, 7, 1, 4, 3, 5, 2, 6]", ArrayUtil.arrayToString(stamps));
+        assertEquals("[0, 7, 1, 4, 3, 5, 2, 6]", Arrays.toString(stamps));
     }
 
     public void testDirectedSearch() throws Exception {
@@ -135,9 +135,9 @@ public class DfsSearchTest extends TestCase {
         short[] colorMap = new short[graph.V()];
         DepthFirstSearch.depthFirstSearch(graph, forwardStamper, colorMap);
 
-        assertEquals("[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]", ArrayUtil.arrayToString(colorMap));
+        assertEquals("[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]", Arrays.toString(colorMap));
 
-        assertEquals("[0, 1, 4, 5, 3, 2, 10, 11, 12, 8, 9, 6, 7]", ArrayUtil.arrayToString(stamps));
+        assertEquals("[0, 1, 4, 5, 3, 2, 10, 11, 12, 8, 9, 6, 7]", Arrays.toString(stamps));
     }
 
     private static class MyDfsVisitor implements DfsVisitor {

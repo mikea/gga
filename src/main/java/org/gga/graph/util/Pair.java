@@ -1,5 +1,7 @@
 package org.gga.graph.util;
 
+import com.google.common.base.Objects;
+
 /**
  * @author mike
  */
@@ -15,19 +17,13 @@ public class Pair<S, T> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        Pair that = (Pair) o;
 
-        Pair pair = (Pair) o;
-
-        if (first != null ? !first.equals(pair.first) : pair.first != null) return false;
-        return !(second != null ? !second.equals(pair.second) : pair.second != null);
-
+        return Objects.equal(first, that.first) && Objects.equal(second, that.second);
     }
 
     public int hashCode() {
-        int result;
-        result = first != null ? first.hashCode() : 0;
-        result = 31 * result + (second != null ? second.hashCode() : 0);
-        return result;
+        return Objects.hashCode(first, second);
     }
 
     public static <S, T> Pair<S, T> of(S s, T t) {
