@@ -91,4 +91,38 @@ public class DataGraphImpl<N, E> implements DataGraph<N, E> {
     public void setNode(final int v, final N data) {
         vertices.put(v, data);
     }
+
+    public static <N, E> DataGraph<N, E> newDataGraph(int size, boolean isDirected) {
+        return new DataGraphImpl<N, E>(size, isDirected);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder("DataGraphImpl{");
+        result.append("isDirected=");
+        result.append(isDirected());
+        result.append(", ");
+        result.append("[");
+        for (int v = 0; v < V(); ++v) {
+            for (Edge edge : graph.getEdges(v)) {
+                if (!isDirected() && edge.other(v) < v) continue;
+
+                if (result.charAt(result.length() - 1) != '[') {
+                    result.append(", ");
+                }
+                result.append(getNode(v));
+                if (isDirected()) {
+                    result.append("->");
+                } else {
+                    result.append("<->");
+                }
+                result.append(getNode(edge.other(v)));
+                result.append(":");
+                result.append(getEdge(edge));
+            }
+        }
+        result.append("]");
+        result.append("}");
+        return result.toString();
+    }
 }

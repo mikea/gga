@@ -39,4 +39,9 @@ public class BiVertexMapImpl<V> implements BiVertexMap<V> {
         }
         return (V) data[v];
     }
+
+    @Override
+    public String toString() {
+        return map.toString();
+    }
 }
