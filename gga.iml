@@ -28,6 +28,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: asm:asm-commons:3.3.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: asm:asm-util:3.3.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: asm:asm-xml:3.3.1" level="project" />
+    <orderEntry type="library" name="Maven: net.sf.trove4j:trove4j:3.0.3" level="project" />
   </component>
 </module>
 
