@@ -102,14 +102,11 @@ public class DataGraphImpl<N, E> implements DataGraph<N, E> {
         result.append("isDirected=");
         result.append(isDirected());
         result.append(", ");
-        result.append("[");
+        result.append("[\n");
         for (int v = 0; v < V(); ++v) {
             for (Edge edge : graph.getEdges(v)) {
                 if (!isDirected() && edge.other(v) < v) continue;
-
-                if (result.charAt(result.length() - 1) != '[') {
-                    result.append(", ");
-                }
+                result.append("    ");
                 result.append(getNode(v));
                 if (isDirected()) {
                     result.append("->");
@@ -119,6 +116,7 @@ public class DataGraphImpl<N, E> implements DataGraph<N, E> {
                 result.append(getNode(edge.other(v)));
                 result.append(":");
                 result.append(getEdge(edge));
+                result.append("\n");
             }
         }
         result.append("]");
