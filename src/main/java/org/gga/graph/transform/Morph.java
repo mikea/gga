@@ -10,7 +10,13 @@ import org.gga.graph.util.Function;
 import org.gga.graph.util.IntIntFunction;
 import org.gga.graph.util.Pair;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkState;
 
@@ -65,7 +71,7 @@ public class Morph {
         newSize++;
         checkState(newSize > 0 && newSize == g.V());
 
-        DataGraph<N, E> result = new DataGraphImpl<N, E>(newSize, g.isDirected());
+        DataGraph<N, E> result = new DataGraphImpl<N, E>(g.getNodeClass(), newSize, g.isDirected());
 
         for (int v = 0; v < g.V(); v++) {
             result.setNode(vertexMap[v], g.getNode(v));
@@ -89,7 +95,8 @@ public class Morph {
     public static <N, E, N1, E1> DataGraph<N1, E1> morph(
             DataGraph<N, E> g,
             Function<N, N1> nodeMap,
-            Function<List<E>, E1> verticesMap
+            Function<List<E>, E1> verticesMap,
+            Class<N1> newNodeClass
             ) {
 
         Object[] nodesDataMap = new Object[g.V()];
@@ -129,7 +136,7 @@ public class Morph {
         Object[] newNodes = newEdges.keySet().toArray(new Object[newEdges.keySet().size()]);
         int newSize = newEdges.size();
 
-        DataGraph<N1, E1> result = new DataGraphImpl<N1,E1>(newSize, g.isDirected());
+        DataGraph<N1, E1> result = new DataGraphImpl<N1,E1>(newNodeClass, newSize, g.isDirected());
 
         for (int v = 0; v < newSize; v++) {
             result.setNode(v, (N1) newNodes[v]);

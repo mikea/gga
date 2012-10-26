@@ -3,19 +3,26 @@ package org.gga.graph.impl;
 import org.gga.graph.maps.BiVertexMap;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
 import java.util.Map;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.Maps.newHashMap;
 
 /**
  * @author mike
  */
 public class BiVertexMapImpl<V> implements BiVertexMap<V> {
+    private final Class<V> clazz;
     private Object[] data = new Object[10];
-    private final Map<V, Integer> map = new HashMap<V, Integer>();
+    private final Map<V, Integer> map = newHashMap();
+
+    public BiVertexMapImpl(Class<V> clazz) {
+        this.clazz = clazz;
+    }
 
     @Override
     public int getVertex(V data) {
-        return map.get(data);
+        return checkNotNull(map.get(data), "Vertex for %s not found", data);
     }
 
     @Override
@@ -37,7 +44,7 @@ public class BiVertexMapImpl<V> implements BiVertexMap<V> {
         if (v >= data.length) {
             return null;
         }
-        return (V) data[v];
+        return clazz.cast(data[v]);
     }
 
     @Override

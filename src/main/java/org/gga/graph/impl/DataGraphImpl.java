@@ -1,5 +1,6 @@
 package org.gga.graph.impl;
 
+import com.google.common.base.Objects;
 import org.gga.graph.Edge;
 import org.gga.graph.Graph;
 import org.gga.graph.MutableGraph;
@@ -8,6 +9,13 @@ import org.gga.graph.maps.DataGraph;
 import org.gga.graph.maps.EdgeMap;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
+import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
 
 /**
  * @author mike
@@ -15,11 +23,32 @@ import javax.annotation.Nullable;
 public class DataGraphImpl<N, E> implements DataGraph<N, E> {
     private final MutableGraph graph;
 
-    private final BiVertexMap<N> vertices = new BiVertexMapImpl<N>();
+    private final BiVertexMap<N> vertices;
     private final EdgeMap<E> edges = new EdgeMapImpl<E>();
+    private final Class<N> nodeClass;
 
-    public DataGraphImpl(int size, boolean isDirected) {
+    public DataGraphImpl(Class<N> nodeClass, int size, boolean isDirected) {
         graph = new SparseGraphImpl(size, isDirected);
+        this.nodeClass = nodeClass;
+        vertices = new BiVertexMapImpl<N>(this.nodeClass);
+    }
+
+    public DataGraphImpl(DataGraph<N, E> graph) {
+        this.nodeClass = graph.getNodeClass();
+        vertices = new BiVertexMapImpl<N>(graph.getNodeClass());
+        this.graph = new SparseGraphImpl(graph.V(), graph.isDirected());
+        Graph intGraph = graph.getIntGraph();
+
+        for (int i = 0; i < graph.V(); ++i) {
+            setNode(i, graph.getNode(i));
+        }
+        for (int i = 0; i < graph.V(); ++i) {
+            for (Edge edge : intGraph.getEdges(i)) {
+                if (isDirected() || edge.v() == i) {
+                    insert(edge.v(), edge.w(), graph.getEdge(edge));
+                }
+            }
+        }
     }
 
     @Override
@@ -77,6 +106,16 @@ public class DataGraphImpl<N, E> implements DataGraph<N, E> {
     }
 
     @Override
+    public Class<N> getNodeClass() {
+        return nodeClass;
+    }
+
+    @Override
+    public Class<E> getEdgeClass() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public int getIndex(N data) {
         return vertices.getVertex(data);
     }
@@ -92,8 +131,8 @@ public class DataGraphImpl<N, E> implements DataGraph<N, E> {
         vertices.put(v, data);
     }
 
-    public static <N, E> DataGraph<N, E> newDataGraph(int size, boolean isDirected) {
-        return new DataGraphImpl<N, E>(size, isDirected);
+    public static <N, E> DataGraph<N, E> newDataGraph(Class<N> nodeClass, int size, boolean isDirected) {
+        return new DataGraphImpl<N, E>(nodeClass, size, isDirected);
     }
 
     @Override
@@ -101,26 +140,108 @@ public class DataGraphImpl<N, E> implements DataGraph<N, E> {
         StringBuilder result = new StringBuilder("DataGraphImpl{");
         result.append("isDirected=");
         result.append(isDirected());
+
+        {
+            // Nodes
+            result.append(", ");
+            List<String> nodes = newArrayList();
+            for (int v = 0; v < V(); ++v) {
+                nodes.add(String.valueOf(getNode(v)));
+            }
+            Collections.sort(nodes);
+            result.append(nodes);
+        }
         result.append(", ");
-        result.append("[\n");
-        for (int v = 0; v < V(); ++v) {
-            for (Edge edge : graph.getEdges(v)) {
-                if (!isDirected() && edge.other(v) < v) continue;
-                result.append("    ");
-                result.append(getNode(v));
-                if (isDirected()) {
-                    result.append("->");
-                } else {
-                    result.append("<->");
+        {
+            // Edges
+            List<String> edges = newArrayList();
+            for (int v = 0; v < V(); ++v) {
+                for (Edge edge : graph.getEdges(v)) {
+                    if (!isDirected() && edge.other(v) < v) continue;
+
+                    StringBuilder edgeString = new StringBuilder();
+                    edgeString.append(getNode(v));
+                    if (isDirected()) {
+                        edgeString.append("->");
+                    } else {
+                        edgeString.append("<->");
+                    }
+                    edgeString.append(getNode(edge.other(v)));
+                    edgeString.append(":");
+                    edgeString.append(getEdge(edge));
+                    edges.add(edgeString.toString());
                 }
-                result.append(getNode(edge.other(v)));
-                result.append(":");
-                result.append(getEdge(edge));
+            }
+            Collections.sort(edges);
+            result.append("[\n");
+            for (String edge : edges) {
+                result.append("    ");
+                result.append(edge);
                 result.append("\n");
             }
+            result.append("]");
         }
-        result.append("]");
+
         result.append("}");
         return result.toString();
+    }
+
+    public static class Builder<N, E> {
+        private final List<N> nodes = newArrayList();
+        private final Set<N> nodeSet = newHashSet();
+        private final Class<N> nodeClass;
+        private final boolean directed;
+        private final List<Edge<N, E>> edges = newArrayList();
+
+        public Builder(Class<N> nodeClass, Class<E> edgeClass, boolean isDirected) {
+            this.nodeClass = nodeClass;
+            directed = isDirected;
+        }
+
+        public void addNode(N node) {
+            checkState(!nodeSet.contains(node));
+            nodes.add(node);
+            nodeSet.add(node);
+        }
+
+        public DataGraph<N, E> build() {
+            DataGraphImpl<N, E> result = new DataGraphImpl<N, E>(nodeClass, nodes.size(), directed);
+            for (int i = 0; i < nodes.size(); i++) {
+                result.setNode(i, nodes.get(i));
+            }
+
+            for (Edge<N, E> edge : edges) {
+                result.insert(edge.from, edge.to, edge.edge);
+            }
+
+            return result;
+        }
+
+        public void addEdge(N from, N to, E edge) {
+            checkState(nodeSet.contains(to), "To node %s not found", to);
+            checkState(nodeSet.contains(from), "From node %s not found", from);
+            edges.add(new Edge<N, E>(from, to, edge));
+        }
+
+        private static final class Edge<N, E> {
+            private final N from;
+            private final N to;
+            private final E edge;
+
+            private Edge(N from, N to, E edge) {
+                this.from = from;
+                this.to = to;
+                this.edge = edge;
+            }
+
+            @Override
+            public String toString() {
+                return Objects.toStringHelper(this)
+                        .add("from", from)
+                        .add("to", to)
+                        .add("edge", edge)
+                        .toString();
+            }
+        }
     }
 }

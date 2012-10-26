@@ -73,7 +73,7 @@ public class Subgraph {
         }
 
 
-        DataGraph<N, E> result = new DataGraphImpl<N,E>(newSize, g.isDirected());
+        DataGraph<N, E> result = new DataGraphImpl<N,E>(g.getNodeClass(), newSize, g.isDirected());
 
         for (int v = 0; v < g.V(); v++) {
             if (verticesMap[v] < 0) continue;

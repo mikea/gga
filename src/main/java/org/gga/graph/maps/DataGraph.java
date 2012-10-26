@@ -36,4 +36,7 @@ public interface DataGraph<N, E> {
     void remove(Edge edge);
 
     Graph getIntGraph();
+
+    Class<N> getNodeClass();
+    Class<E> getEdgeClass();
 }
