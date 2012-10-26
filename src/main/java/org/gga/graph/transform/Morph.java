@@ -1,12 +1,12 @@
 package org.gga.graph.transform;
 
+import com.google.common.base.Function;
 import org.gga.graph.Edge;
 import org.gga.graph.Graph;
 import org.gga.graph.MutableGraph;
 import org.gga.graph.impl.DataGraphImpl;
 import org.gga.graph.impl.SparseGraphImpl;
 import org.gga.graph.maps.DataGraph;
-import org.gga.graph.util.Function;
 import org.gga.graph.util.IntIntFunction;
 import org.gga.graph.util.Pair;
 
@@ -102,7 +102,7 @@ public class Morph {
         Object[] nodesDataMap = new Object[g.V()];
 
         for (int v = 0; v < g.V(); v++) {
-            N1 n1 = nodeMap.fun(g.getNode(v));
+            N1 n1 = nodeMap.apply(g.getNode(v));
             nodesDataMap[v] = n1;
         }
 
@@ -148,7 +148,7 @@ public class Morph {
             for (N1 n2 : edges.keySet()) {
                 List<E> oldEdges = edges.get(n2);
 
-                E1 newEdge = verticesMap.fun(oldEdges);
+                E1 newEdge = verticesMap.apply(oldEdges);
                 result.insert(n1, n2, newEdge);
             }
         }
