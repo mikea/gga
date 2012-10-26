@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
  * @author mike
  */
 public interface EdgeMap<E> {
-    void put(Edge e, E data);
+    void put(Edge e, @Nullable E data);
 
     @Nullable
     E get(Edge e);

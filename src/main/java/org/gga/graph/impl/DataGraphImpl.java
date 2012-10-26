@@ -1,6 +1,7 @@
 package org.gga.graph.impl;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import org.gga.graph.Edge;
 import org.gga.graph.Graph;
 import org.gga.graph.MutableGraph;
@@ -8,11 +9,13 @@ import org.gga.graph.maps.BiVertexMap;
 import org.gga.graph.maps.DataGraph;
 import org.gga.graph.maps.EdgeMap;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
@@ -63,7 +66,7 @@ public class DataGraphImpl<N, E> implements DataGraph<N, E> {
 
     @Nullable
     @Override
-    public E edge(N n1, N n2) {
+    public E edge(@Nonnull N n1, @Nonnull N n2) {
         Edge edge = graph.edge(vertices.getVertex(n1), vertices.getVertex(n2));
         return edge != null ? edges.get(edge) : null;
     }
@@ -81,15 +84,17 @@ public class DataGraphImpl<N, E> implements DataGraph<N, E> {
         return edges.get(e);
     }
 
+    @Nonnull
     @Override
-    public Edge insert(N n1, N n2, @Nullable E e) {
+    public Edge insert(@Nonnull N n1, @Nonnull N n2, @Nullable E e) {
         final Edge edge = graph.insert(vertices.getVertex(n1), vertices.getVertex(n2));
         edges.put(edge, e);
         return edge;
     }
 
+    @Nonnull
     @Override
-    public Edge insert(final int v1, final int v2, final E e) {
+    public Edge insert(final int v1, final int v2, @Nullable final E e) {
         final Edge edge = graph.insert(v1, v2);
         edges.put(edge, e);
         return edge;
@@ -116,18 +121,24 @@ public class DataGraphImpl<N, E> implements DataGraph<N, E> {
     }
 
     @Override
-    public int getIndex(N data) {
+    public int getIndex(@Nonnull N data) {
         return vertices.getVertex(data);
     }
 
-    @Nullable
+    @Nonnull
     @Override
     public N getNode(int v) {
-        return vertices.get(v);
+        return checkNotNull(vertices.get(v));
+    }
+
+    @Nonnull
+    @Override
+    public Optional<N> getNodeSafe(int v) {
+        return Optional.fromNullable(vertices.get(v));
     }
 
     @Override
-    public void setNode(final int v, final N data) {
+    public void setNode(final int v, @Nonnull final N data) {
         vertices.put(v, data);
     }
 

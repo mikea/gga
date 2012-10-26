@@ -1,6 +1,8 @@
 package org.gga.graph.transform;
 
 import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.ObjectArrays;
 import org.gga.graph.Edge;
 import org.gga.graph.Graph;
 import org.gga.graph.MutableGraph;
@@ -8,36 +10,32 @@ import org.gga.graph.impl.DataGraphImpl;
 import org.gga.graph.impl.SparseGraphImpl;
 import org.gga.graph.maps.DataGraph;
 import org.gga.graph.util.IntIntFunction;
-import org.gga.graph.util.Pair;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Maps.newHashMap;
+import static com.google.common.collect.Maps.newLinkedHashMap;
 
 /**
  * @author mike
  */
-public class Morph {
+public final class Morph {
     public static Graph morphGraph(Graph g, IntIntFunction map) {
         int[] vertexMap = new int[g.V()];
-        int newSize = -1;
+        int maxVertex = -1;
 
         for (int v = 0; v < g.V(); v++) {
-            int t = map.fun(v);
+            int t = map.apply(v);
             vertexMap[v] = t;
-            newSize = Math.max(newSize, t);
+            maxVertex = Math.max(maxVertex, t);
         }
 
-        newSize++;
+        int newSize = maxVertex + 1;
         checkState(newSize > 0);
 
-        Collection<Pair<Integer, Integer>> edges = new HashSet<Pair<Integer, Integer>>();
         MutableGraph result = new SparseGraphImpl(newSize, g.isDirected());
 
         for (int v = 0; v < g.V(); v++) {
@@ -47,10 +45,8 @@ public class Morph {
                 int v1 = vertexMap[v];
                 int w1 = vertexMap[w];
 
-                Pair<Integer, Integer> p = new Pair<Integer, Integer>(v1, w1);
-                if (!edges.contains(p)) {
+                if (result.edge(v1, w1) == null) {
                     result.insert(v1, w1);
-                    edges.add(p);
                 }
             }
         }
@@ -63,7 +59,7 @@ public class Morph {
         int newSize = -1;
 
         for (int v = 0; v < g.V(); v++) {
-            int t = map.fun(v);
+            int t = map.apply(v);
             vertexMap[v] = t;
             newSize = Math.max(newSize, t);
         }
@@ -91,40 +87,36 @@ public class Morph {
         return result;
     }
 
-    @SuppressWarnings("unchecked")
     public static <N, E, N1, E1> DataGraph<N1, E1> morph(
             DataGraph<N, E> g,
             Function<N, N1> nodeMap,
             Function<List<E>, E1> verticesMap,
-            Class<N1> newNodeClass
-            ) {
-
-        Object[] nodesDataMap = new Object[g.V()];
+            Class<N1> newNodeClass,
+            boolean allowSelfLoops) {
+        N1[] nodesDataMap = ObjectArrays.newArray(newNodeClass, g.V());
 
         for (int v = 0; v < g.V(); v++) {
-            N1 n1 = nodeMap.apply(g.getNode(v));
-            nodesDataMap[v] = n1;
+            nodesDataMap[v] = nodeMap.apply(g.getNode(v));
         }
 
-        Map<N1, Map<N1, List<E>>> newEdges = new LinkedHashMap<N1, Map<N1, List<E>>>();
+        Map<N1, Map<N1, List<E>>> newEdges = newLinkedHashMap();
 
         for (int v = 0; v < g.V(); v++) {
-            N1 n1 = (N1) nodesDataMap[v];
+            N1 n1 = nodesDataMap[v];
 
             Map<N1, List<E>> edges = newEdges.get(n1);
             if (edges == null) {
-                edges = new HashMap<N1, List<E>>();
+                edges = newHashMap();
                 newEdges.put(n1, edges);
             }
 
             for (Edge e : g.getIntGraph().getEdges(v)) {
                 int w = e.w();
 
-
-                N1 n2 = (N1) nodesDataMap[w];
+                N1 n2 = nodesDataMap[w];
                 List<E> list = edges.get(n2);
                 if (list == null) {
-                    list = new ArrayList<E>();
+                    list = newArrayList();
                     edges.put(n2, list);
                 }
 
@@ -132,27 +124,27 @@ public class Morph {
             }
         }
 
-
-        Object[] newNodes = newEdges.keySet().toArray(new Object[newEdges.keySet().size()]);
-        int newSize = newEdges.size();
+        N1[] newNodes = Iterables.toArray(newEdges.keySet(), newNodeClass);
+        int newSize = newNodes.length;
 
         DataGraph<N1, E1> result = new DataGraphImpl<N1,E1>(newNodeClass, newSize, g.isDirected());
 
         for (int v = 0; v < newSize; v++) {
-            result.setNode(v, (N1) newNodes[v]);
+            result.setNode(v, newNodes[v]);
         }
 
-        for (N1 n1 : newEdges.keySet()) {
-            Map<N1, List<E>> edges = newEdges.get(n1);
+        for (Map.Entry<N1, Map<N1, List<E>>> entries : newEdges.entrySet()) {
+            Map<N1, List<E>> edges = entries.getValue();
+            N1 v = entries.getKey();
 
-            for (N1 n2 : edges.keySet()) {
-                List<E> oldEdges = edges.get(n2);
+            for (Map.Entry<N1, List<E>> edgesEntry : edges.entrySet()) {
+                N1 w = edgesEntry.getKey();
+                if (!allowSelfLoops && v.equals(w)) continue;
 
-                E1 newEdge = verticesMap.apply(oldEdges);
-                result.insert(n1, n2, newEdge);
+                E1 newEdge = verticesMap.apply(edgesEntry.getValue());
+                result.insert(v, w, newEdge);
             }
         }
-
 
         return result;
     }

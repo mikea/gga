@@ -1,8 +1,10 @@
 package org.gga.graph.maps;
 
+import com.google.common.base.Optional;
 import org.gga.graph.Edge;
 import org.gga.graph.Graph;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
@@ -13,15 +15,18 @@ public interface DataGraph<N, E> {
 
     boolean isDirected();
 
-    int getIndex(N data);
+    int getIndex(@Nonnull N data);
 
-    @Nullable
+    @Nonnull
     N getNode(int v);
 
-    void setNode(int v, N data);
+    @Nonnull
+    Optional<N> getNodeSafe(int v);
+
+    void setNode(int v, @Nonnull N data);
 
     @Nullable
-    E edge(N n1, N n2);
+    E edge(@Nonnull N n1, @Nonnull N n2);
 
     @Nullable
     E edge(int v1, int v2);
@@ -29,9 +34,11 @@ public interface DataGraph<N, E> {
     @Nullable
     E getEdge(Edge e);
 
-    Edge insert(N n1, N n2, E e);
+    @Nonnull
+    Edge insert(@Nonnull N n1, @Nonnull N n2, @Nullable E e);
 
-    Edge insert(int v1, int v2, E e);
+    @Nonnull
+    Edge insert(int v1, int v2, @Nullable E e);
 
     void remove(Edge edge);
 

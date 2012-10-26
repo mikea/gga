@@ -231,6 +231,33 @@ public class SparseGraphImpl implements MutableGraph {
         };
     }
 
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder("SparseGraphImpl{");
+        result.append("V=");
+        result.append(V());
+        result.append(", isDirected=");
+        result.append(isDirected());
+        result.append(", [\n");
+        for (int i = 0; i < V(); ++i) {
+            for (Edge edge : getEdges(i)) {
+                if (!isDirected() && edge.other(i) < i) continue;
+                result.append("    ");
+                result.append(edge.v());
+                if (isDirected()) {
+                    result.append("->");
+                } else {
+                    result.append("<->");
+                }
+                result.append(edge.w());
+                result.append("\n");
+            }
+        }
+        result.append("]}");
+
+        return result.toString();
+    }
+
     static class EmptyIterator<E extends Edge> implements Iterator<E> {
         @Override
         public boolean hasNext() {
