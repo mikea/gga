@@ -23,6 +23,18 @@ public class StrongComponents {
         return visitor.currentComponent;
     }
 
+    public static boolean isConnected(Graph graph) {
+        final int[] starts = {0};
+        graph.getDfs().depthFirstSearch(new AbstractDfsVisitor() {
+            @Override
+            public void startVertex(int v, Graph graph) {
+                starts[0]++;
+            }
+        });
+
+        return starts[0] == 1;
+    }
+
 
     private static class TarjanSccVisitor extends AbstractDfsVisitor {
         private final int[] rootMap;

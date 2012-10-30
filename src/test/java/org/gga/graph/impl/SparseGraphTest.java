@@ -1,12 +1,14 @@
 package org.gga.graph.impl;
 
-import junit.framework.TestCase;
 import org.gga.graph.MutableGraph;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * @author mike
  */
-public class SparseGraphTest extends TestCase {
+public class SparseGraphTest {
+    @Test
     public void testDirectedInsert() throws Exception {
         MutableGraph graph = new SparseGraphImpl(10, true);
 
@@ -14,11 +16,11 @@ public class SparseGraphTest extends TestCase {
         graph.insert(0, 2);
         graph.insert(0, 3);
 
-        assertNotNull(graph.edge(0, 1));
-        assertNotNull(graph.edge(0, 2));
-        assertNotNull(graph.edge(0, 3));
-        assertNull(graph.edge(1, 0));
-        assertNull(graph.edge(2, 0));
-        assertNull(graph.edge(3, 0));
+        Assert.assertNotNull(graph.edge(0, 1));
+        Assert.assertNotNull(graph.edge(0, 2));
+        Assert.assertNotNull(graph.edge(0, 3));
+        Assert.assertNull(graph.edge(1, 0));
+        Assert.assertNull(graph.edge(2, 0));
+        Assert.assertNull(graph.edge(3, 0));
     }
 }

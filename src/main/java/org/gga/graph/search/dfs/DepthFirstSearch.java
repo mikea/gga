@@ -7,7 +7,7 @@ import org.gga.graph.util.ColorValue;
 /**
  * @author mike
  */
-public class DepthFirstSearch {
+public final class DepthFirstSearch {
     private DepthFirstSearch() {
     }
 
