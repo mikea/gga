@@ -209,10 +209,11 @@ public class DataGraphImpl<N, E> implements DataGraph<N, E> {
             directed = isDirected;
         }
 
-        public void addNode(N node) {
+        public Builder<N, E> addNode(N node) {
             checkState(!nodeSet.contains(node));
             nodes.add(node);
             nodeSet.add(node);
+            return this;
         }
 
         public DataGraph<N, E> build() {
@@ -228,10 +229,11 @@ public class DataGraphImpl<N, E> implements DataGraph<N, E> {
             return result;
         }
 
-        public void addEdge(N from, N to, E edge) {
+        public Builder<N, E> addEdge(N from, N to, E edge) {
             checkState(nodeSet.contains(to), "To node %s not found", to);
             checkState(nodeSet.contains(from), "From node %s not found", from);
             edges.add(new Edge<N, E>(from, to, edge));
+            return this;
         }
 
         private static final class Edge<N, E> {
