@@ -78,7 +78,7 @@ public class SubGraph implements Graph {
 
     @Override
     public int E() {
-        throw new UnsupportedOperationException();
+        return graph.E();
     }
 
     @Override

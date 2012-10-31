@@ -28,7 +28,7 @@ public class BreadthFirstSearch {
     private static void bfs(Graph g, BfsVisitor visitor, short[] colorMap, int firstVertex) {
         IntQueue q = new IntQueue();
 
-        colorMap[firstVertex] = ColorValue.GREY;
+        colorMap[firstVertex] = ColorValue.GRAY;
         visitor.discoverVertex(firstVertex, g);
         q.push(firstVertex);
 
@@ -44,13 +44,13 @@ public class BreadthFirstSearch {
 
                 if (c == ColorValue.WHITE) {
                     visitor.treeEdge(e, g);
-                    colorMap[w] = ColorValue.GREY;
+                    colorMap[w] = ColorValue.GRAY;
                     visitor.discoverVertex(w, g);
                     q.push(w);
                 } else {
                     visitor.nonTreeEdge(e, g);
 
-                    if (c == ColorValue.GREY) {
+                    if (c == ColorValue.GRAY) {
                         visitor.greyTarget(e, g);
                     } else {
                         visitor.blackTarget(e, g);

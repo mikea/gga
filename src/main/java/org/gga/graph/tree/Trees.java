@@ -3,12 +3,17 @@ package org.gga.graph.tree;
 import org.gga.graph.Edge;
 import org.gga.graph.Graph;
 import org.gga.graph.search.dfs.AbstractDfsVisitor;
+import org.gga.graph.search.dfs.HasDfs;
 
 /**
  * @author mike.aizatsky@gmail.com
  */
-public class Trees {
-    public static boolean isTree(Graph graph, int root) {
+public final class Trees {
+    public static boolean isTree(HasDfs graph) {
+        return isTree(graph, 0);
+    }
+
+    public static boolean isTree(HasDfs graph, int root) {
         final boolean[] result = {true};
         graph.getDfs().depthFirstSearch(root, new AbstractDfsVisitor() {
             @Override
