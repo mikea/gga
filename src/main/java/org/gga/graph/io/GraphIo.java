@@ -50,7 +50,7 @@ public class GraphIo {
 
             String out = s.substring(idx + 1);
 
-            for (StringTokenizer i = new StringTokenizer(out); i.hasMoreTokens();) {
+            for (StringTokenizer i = new StringTokenizer(out); i.hasMoreTokens(); ) {
                 String s1 = i.nextToken();
                 g.insert(v, Integer.valueOf(s1));
             }
@@ -94,9 +94,15 @@ public class GraphIo {
             w.println("digraph " + graphName + " {");
             for (int i = 0; i < graph.V(); ++i) {
                 for (Edge edge : intGraph.getEdges(i)) {
+                    if (edge.v() != i) continue;
                     String from = graph.getNode(edge.v()).toString();
                     String to = graph.getNode(edge.w()).toString();
-                    w.println("\"" + from + "\" -> \"" + to + "\";");
+                    E label = graph.getEdge(edge);
+                    w.print("\"" + from + "\" -> \"" + to + "\"");
+                    if (label != null) {
+                        w.print(" [label=\"" + label + "\"]");
+                    }
+                    w.println(";");
                 }
             }
             w.println("}");
