@@ -1,10 +1,18 @@
 package org.gga.graph.io;
 
+import org.gga.graph.Edge;
 import org.gga.graph.Graph;
 import org.gga.graph.MutableGraph;
 import org.gga.graph.impl.SparseGraphImpl;
+import org.gga.graph.maps.DataGraph;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.io.PrintWriter;
 import java.util.StringTokenizer;
 import java.util.zip.GZIPInputStream;
 
@@ -62,6 +70,38 @@ public class GraphIo {
             return new LineNumberReader(new BufferedReader(
                     new InputStreamReader(new FileInputStream(file))
             ));
+        }
+    }
+
+    public static void writeDot(File file, Graph graph, String graphName) {
+        try (PrintWriter w = new PrintWriter(file)) {
+            w.println("digraph " + graphName + " {");
+            for (int i = 0; i < graph.V(); ++i) {
+                for (Edge edge : graph.getEdges(i)) {
+                    w.println(edge.v() + " -> " + edge.w() + ";");
+                }
+            }
+            w.println("}");
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    public static <N, E> void writeDot(File file, DataGraph<N, E> graph, String graphName) {
+        Graph intGraph = graph.getIntGraph();
+
+        try (PrintWriter w = new PrintWriter(file)) {
+            w.println("digraph " + graphName + " {");
+            for (int i = 0; i < graph.V(); ++i) {
+                for (Edge edge : intGraph.getEdges(i)) {
+                    String from = graph.getNode(edge.v()).toString();
+                    String to = graph.getNode(edge.w()).toString();
+                    w.println("\"" + from + "\" -> \"" + to + "\";");
+                }
+            }
+            w.println("}");
+        } catch (IOException e) {
+            throw new RuntimeException();
         }
     }
 }
