@@ -24,7 +24,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="gga" target="1.5" />
+      <module name="gga" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>
