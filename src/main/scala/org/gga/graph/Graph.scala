@@ -25,9 +25,18 @@ trait Graph extends HasDfs {
 
   def edge(v: Int, w: Int): Option[Edge]
 
+  /**
+   * Iterate over edges out of the vertex.
+   */
   def getEdgeIterator(v: Int): EdgeIterator
 
+  /**
+   * Iterate over edges out of the vertex.
+   */
   def getEdgesIterator(v: Int): Iterator[Edge]
 
+  /**
+   * Iterate over edges out of the vertex.
+   */
   def getEdges(v: Int): Iterable[Edge]
 }
