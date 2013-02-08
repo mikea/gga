@@ -19,7 +19,7 @@ object TopologicalSort {
       private var pos: Int = g.V - 1
 
       override def backEdge(e: Edge, graph: Graph) {
-        throw new NotADagException
+        throw new NotADagException(e.toString())
       }
 
       override def finishVertex(v: Int, graph: Graph) {

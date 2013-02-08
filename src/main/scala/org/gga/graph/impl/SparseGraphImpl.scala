@@ -1,6 +1,6 @@
 package org.gga.graph.impl
 
-import org.gga.graph.{EdgeIterator, Edge, MutableGraph}
+import org.gga.graph.{Graph, EdgeIterator, Edge, MutableGraph}
 import org.gga.graph.search.dfs.DepthFirstSearch
 import org.gga.graph.search.dfs.Dfs
 import org.gga.graph.search.dfs.DfsVisitor
@@ -99,6 +99,19 @@ class SparseGraphImpl(v: Int, anIsDigraph: Boolean) extends MutableGraph {
 }
 
 object SparseGraphImpl {
+  def copyOf(g: Graph, isDirected: Boolean): SparseGraphImpl = {
+    assert(g.isDirected)
+    val result = new SparseGraphImpl(g.V, isDirected)
+
+    for (i <- 0 until g.V) {
+      for (edge <- g.getEdges(i)) {
+        result.insert(edge.v, edge.w)
+      }
+    }
+
+    result
+  }
+
   private class MyEmptyEdgeIterator extends EdgeIterator {
     override def clone: MyEmptyEdgeIterator = {
       new MyEmptyEdgeIterator()
