@@ -27,4 +27,6 @@ class BiVertexMapImpl[V] extends BiVertexMap[V] {
     }
     Some(data(v))
   }
+
+  override def toString = map.toString()
 }

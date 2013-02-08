@@ -60,4 +60,32 @@ class DataGraphImpl[N, E](aSize: Int, anIsDirected: Boolean) extends DataGraph[N
 
   def setNode(v: Int, data: N) { vertexMap.put(v, data) }
 
+  override def toString = {
+    val result = new StringBuilder("DataGraphImpl{")
+    result.append("isDirected=")
+    result.append(isDirected)
+    result.append(", ")
+    result.append("[")
+    for (v <- 0 until V) {
+      for (edge <- graph.getEdges(v)) {
+        if (!isDirected || edge.other(v) >= v) {
+          if (result.charAt(result.length - 1) != '[') {
+            result.append(", ")
+          }
+          result.append(getNode(v))
+          if (isDirected) {
+            result.append("->")
+          } else {
+            result.append("<->")
+          }
+          result.append(getNode(edge.other(v)))
+          result.append(":")
+          result.append(getEdge(edge))
+        }
+      }
+    }
+    result.append("]")
+    result.append("}")
+    result.toString()
+  }
 }
