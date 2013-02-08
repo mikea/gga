@@ -47,6 +47,10 @@ class FilteredGraph(aGraph: Graph, aVertices: Array[Boolean], anEdges: Array[Boo
       def depthFirstSearch(visitor: DfsVisitor) {
         DepthFirstSearch.depthFirstSearch(FilteredGraph.this, visitor)
       }
+
+      def depthFirstSearch(startVertex: Int, visitor: DfsVisitor) {
+        DepthFirstSearch.depthFirstSearch(startVertex, FilteredGraph.this, visitor)
+      }
     }
   }
 
@@ -60,7 +64,6 @@ class FilteredGraph(aGraph: Graph, aVertices: Array[Boolean], anEdges: Array[Boo
 }
 
 object FilteredGraph {
-
   trait GraphFilter {
     def acceptVertex(v: Int): Boolean
 

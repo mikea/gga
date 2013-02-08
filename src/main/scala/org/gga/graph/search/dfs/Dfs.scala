@@ -5,4 +5,5 @@ package org.gga.graph.search.dfs
  */
 trait Dfs {
   def depthFirstSearch(visitor: DfsVisitor)
+  def depthFirstSearch(startVertex: Int, visitor: DfsVisitor)
 }

@@ -90,6 +90,10 @@ class SparseGraphImpl(v: Int, anIsDigraph: Boolean) extends MutableGraph {
       def depthFirstSearch(visitor: DfsVisitor) {
         DepthFirstSearch.depthFirstSearch(SparseGraphImpl.this, visitor)
       }
+
+      def depthFirstSearch(startVertex: Int, visitor: DfsVisitor) {
+        DepthFirstSearch.depthFirstSearch(startVertex, SparseGraphImpl.this, visitor)
+      }
     }
   }
 }

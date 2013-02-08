@@ -3,11 +3,20 @@ package org.gga.graph.search.dfs
 import org.gga.graph.Edge
 import org.gga.graph.Graph
 import org.gga.graph.util.ColorValue
+import org.gga.graph.impl.FilteredGraph
 
 /**
  * @author mike
  */
 object DepthFirstSearch {
+  def depthFirstSearch(graph: Graph, visitor: DfsVisitor) {
+    depthFirstSearch(0, graph, visitor)
+  }
+
+  def depthFirstSearch(startVertex: Int, graph: Graph, visitor: DfsVisitor) {
+    depthFirstSearch(graph, visitor, new Array[Short](graph.V), startVertex)
+  }
+
   def depthFirstSearch(graph: Graph, visitor: DfsVisitor, colorMap: Array[Short]) {
     depthFirstSearch(graph, visitor, colorMap, 0)
   }
@@ -46,9 +55,5 @@ object DepthFirstSearch {
     }
     visitor.finishVertex(v, graph)
     colorMap(v) = ColorValue.BLACK
-  }
-
-  def depthFirstSearch(graph: Graph, visitor: DfsVisitor) {
-    depthFirstSearch(graph, visitor, new Array[Short](graph.V))
   }
 }
