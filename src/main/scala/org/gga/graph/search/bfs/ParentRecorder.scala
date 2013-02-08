@@ -8,6 +8,14 @@ import java.util
 /**
  * @author mike
  */
+object ParentRecorder {
+  def computeParents(g: Graph, firstVertex: Int): Array[Int] = {
+    val parents = new Array[Int](g.V)
+    BreadthFirstSearch.breadthFirstSearch(g, new ParentRecorder(parents), firstVertex)
+    parents
+  }
+}
+
 class ParentRecorder(aParents: Array[Int]) extends AbstractBfsVisitor {
   private final val parents: Array[Int] = aParents
 
