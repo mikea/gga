@@ -14,7 +14,7 @@ class SparseGraphImpl(v: Int, anIsDigraph: Boolean) extends MutableGraph {
   private final val nVertices: Int = v
   private var nEdges: Int = 0
   private final val isDigraph: Boolean = anIsDigraph
-  private final val edges: Array[mutable.Buffer[Edge]] = new Array[mutable.Buffer[Edge]](v)
+  private final val _edges: Array[mutable.Buffer[Edge]] = new Array[mutable.Buffer[Edge]](v)
 
   def V: Int = nVertices
 
@@ -23,7 +23,7 @@ class SparseGraphImpl(v: Int, anIsDigraph: Boolean) extends MutableGraph {
   def isDirected: Boolean = isDigraph
 
   def edge(v: Int, w: Int): Option[Edge] = {
-    val outEdges = edges(v)
+    val outEdges = _edges(v)
     if (outEdges == null) None
     else outEdges.find((e: Edge) => e != null && e.w == w)
   }
@@ -44,10 +44,10 @@ class SparseGraphImpl(v: Int, anIsDigraph: Boolean) extends MutableGraph {
   }
 
   private def _insert(e: Edge, v: Int) {
-    var outEdges = edges(v)
+    var outEdges = _edges(v)
     if (outEdges == null) {
       outEdges = mutable.Buffer.empty
-      edges(v) = outEdges
+      _edges(v) = outEdges
     }
 
     outEdges += e
@@ -67,17 +67,17 @@ class SparseGraphImpl(v: Int, anIsDigraph: Boolean) extends MutableGraph {
   }
 
   private def _remove(e: Edge, v: Int) {
-    val outEdges = edges(v)
+    val outEdges = _edges(v)
     val idx = outEdges.indexOf(e)
     if (idx >= 0) outEdges.remove(idx)
   }
 
   def getEdgesIterator(v: Int): Iterator[Edge] = {
-    val outEdges = edges(v)
+    val outEdges = _edges(v)
     if (outEdges == null) new EmptyIterator[Edge] else outEdges.iterator
   }
 
-  def getEdges(v: Int): Iterable[Edge] = {
+  def edges(v: Int): Iterable[Edge] = {
     new Iterable[Edge] {
       def iterator: Iterator[Edge] = {
         getEdgesIterator(v)
@@ -104,7 +104,7 @@ object SparseGraphImpl {
     val result = new SparseGraphImpl(g.V, isDirected)
 
     for (i <- 0 until g.V) {
-      for (edge <- g.getEdges(i)) {
+      for (edge <- g.edges(i)) {
         result.insert(edge.v, edge.w)
       }
     }

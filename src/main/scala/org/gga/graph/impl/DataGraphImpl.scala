@@ -6,10 +6,16 @@ import org.gga.graph.maps.DataGraph
 import org.gga.graph.maps.EdgeMap
 import javax.annotation.Nullable
 
+
+object DataGraphImpl {
+  class Builder[N, E](isDirected: Boolean) {
+
+  }
+}
 /**
  * @author mike
  */
-class DataGraphImpl[N, E](aSize: Int, anIsDirected: Boolean) extends DataGraph[N, E] {
+class DataGraphImpl[N >: Null, E](aSize: Int, anIsDirected: Boolean) extends DataGraph[N, E] {
   private final val graph: MutableGraph = new SparseGraphImpl(aSize, anIsDirected)
   private final val vertexMap: BiVertexMap[N] = new BiVertexMapImpl[N]
   private final val edges: EdgeMap[E] = new EdgeMapImpl[E]
@@ -29,10 +35,10 @@ class DataGraphImpl[N, E](aSize: Int, anIsDirected: Boolean) extends DataGraph[N
   }
 
   def edge(v1: Int, v2: Int): Option[E] = {
-    graph.edge(v1, v2).map((e: Edge) => getEdge(e))
+    graph.edge(v1, v2).map((e: Edge) => edge(e))
   }
 
-  def getEdge(e: Edge): E = edges.get(e).get
+  def edge(e: Edge): E = edges.get(e).get
 
   def insert(n1: N, n2: N, e: E): Option[Edge] = {
     val v1: Option[Int] = vertexMap.getVertex(n1)
@@ -52,13 +58,15 @@ class DataGraphImpl[N, E](aSize: Int, anIsDirected: Boolean) extends DataGraph[N
 
   def remove(edge: Edge) { graph.remove(edge) }
 
-  def getIntGraph: Graph = graph
+  def intGraph: Graph = graph
 
   def getIndex(data: N): Option[Int] = vertexMap.getVertex(data)
 
-  def getNode(v: Int): N = vertexMap.get(v).get
+  def node(v: Int): N = vertexMap.get(v).get
 
   def setNode(v: Int, data: N) { vertexMap.put(v, data) }
+
+  def nodes: List[N] = ???
 
   override def toString = {
     val result = new StringBuilder("DataGraphImpl{")
@@ -67,18 +75,18 @@ class DataGraphImpl[N, E](aSize: Int, anIsDirected: Boolean) extends DataGraph[N
     result.append(", ")
     result.append("[\n")
     for (v <- 0 until V) {
-      for (edge <- graph.getEdges(v)) {
-        if (!isDirected || edge.other(v) >= v) {
+      for (e <- graph.edges(v)) {
+        if (!isDirected || e.other(v) >= v) {
           result.append("   ")
-          result.append(getNode(v))
+          result.append(node(v))
           if (isDirected) {
             result.append("->")
           } else {
             result.append("<->")
           }
-          result.append(getNode(edge.other(v)))
+          result.append(node(e.other(v)))
           result.append(":")
-          result.append(getEdge(edge))
+          result.append(edge(e))
           result.append("\n")
         }
       }

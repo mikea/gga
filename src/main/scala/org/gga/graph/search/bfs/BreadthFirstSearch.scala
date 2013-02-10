@@ -26,7 +26,7 @@ object BreadthFirstSearch {
     while (!q.isEmpty) {
       val v: Int = q.pop
       visitor.examineVertex(v, g)
-      for (e <- g.getEdges(v)) {
+      for (e <- g.edges(v)) {
         visitor.examineEdge(e, g)
         val w: Int = e.w
         val c: Short = colorMap(w)

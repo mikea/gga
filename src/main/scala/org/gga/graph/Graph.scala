@@ -1,7 +1,6 @@
 package org.gga.graph
 
 import org.gga.graph.search.dfs.HasDfs
-import javax.annotation.Nullable
 
 /**
  * Sedgewick-inspired graph
@@ -38,5 +37,43 @@ trait Graph extends HasDfs {
   /**
    * Iterate over edges out of the vertex.
    */
-  def getEdges(v: Int): Iterable[Edge]
+  def edges(v: Int): Iterable[Edge]
+
+
+  def allEdges: Set[Edge] = {
+    var result: Set[Edge] = Set()
+
+    for (v <- vertices) {
+      result ++= edges(v)
+    }
+
+    result
+  }
+
+  override def toString = {
+    val result = new StringBuilder(getClass().getSimpleName());
+    result.append('{')
+    result.append("V=")
+    result.append(V)
+    result.append(", isDirected=")
+    result.append(isDirected)
+    result.append(", [\n")
+    for (v <- vertices) {
+      for (e <- edges(v)) {
+        if (isDirected || !(e.other(v) < v)) {
+          result.append("    ")
+          result.append(e.v)
+          if (isDirected) {
+            result.append("->")
+          } else {
+            result.append("<->")
+          }
+          result.append(e.w)
+          result.append("\n")
+        }
+      }
+    }
+    result.append("]}")
+    result.toString
+  }
 }

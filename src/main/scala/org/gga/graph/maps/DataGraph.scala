@@ -2,7 +2,6 @@ package org.gga.graph.maps
 
 import org.gga.graph.Edge
 import org.gga.graph.Graph
-import javax.annotation.Nullable
 
 /**
  * @author mike
@@ -15,7 +14,7 @@ trait DataGraph[N, E] {
 
   def getIndex(data: N): Option[Int]
 
-  def getNode(v: Int): N
+  def node(v: Int): N
 
   def setNode(v: Int, data: N)
 
@@ -23,7 +22,7 @@ trait DataGraph[N, E] {
 
   def edge(v1: Int, v2: Int): Option[E]
 
-  def getEdge(e: Edge): E
+  def edge(e: Edge): E
 
   def insert(n1: N, n2: N, e: E): Option[Edge]
 
@@ -31,5 +30,5 @@ trait DataGraph[N, E] {
 
   def remove(edge: Edge)
 
-  def getIntGraph: Graph
+  def intGraph: Graph
 }

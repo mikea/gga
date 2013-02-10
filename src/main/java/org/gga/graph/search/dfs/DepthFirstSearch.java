@@ -41,7 +41,7 @@ public class DepthFirstSearch {
 
         visitor.discoverVertex(v, graph);
 
-        for (Edge e : graph.getEdges(v)) {
+        for (Edge e : graph.edges(v)) {
             int w = e.other(v);
 
             visitor.examineEdge(e, graph);

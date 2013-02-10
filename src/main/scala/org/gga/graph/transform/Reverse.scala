@@ -10,7 +10,7 @@ import org.gga.graph.MutableGraph
 object Reverse {
   def reverseGraph(src: Graph, dst: MutableGraph, edgeMap: Array[Int]): Graph = {
     for (v <- src.vertices) {
-      for (e <- src.getEdges(v)) {
+      for (e <- src.edges(v)) {
         val e1: Edge = dst.insert(e.w, v)
         if (edgeMap != null) {
           edgeMap(e1.getIdx) = e.getIdx

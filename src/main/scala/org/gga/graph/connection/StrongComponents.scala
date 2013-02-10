@@ -35,7 +35,7 @@ object StrongComponents {
     }
 
     override def finishVertex(v: Int, graph: Graph) {
-      for (e <- graph.getEdges(v)) {
+      for (e <- graph.edges(v)) {
         val w: Int = e.other(v)
         if (componentMap(w) == Integer.MAX_VALUE) {
           rootMap(v) = minDiscoverTime(rootMap(v), rootMap(w))

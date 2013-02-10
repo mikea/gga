@@ -1,9 +1,7 @@
 package org.gga.graph.search.dfs
 
-import org.gga.graph.Edge
 import org.gga.graph.Graph
 import org.gga.graph.util.ColorValue
-import org.gga.graph.impl.FilteredGraph
 
 /**
  * @author mike
@@ -40,7 +38,7 @@ object DepthFirstSearch {
   private def dfsImpl(graph: Graph, visitor: DfsVisitor, colorMap: Array[Short], v: Int) {
     colorMap(v) = ColorValue.GREY
     visitor.discoverVertex(v, graph)
-    for (e <- graph.getEdges(v)) {
+    for (e <- graph.edges(v)) {
       val w: Int = e.other(v)
       visitor.examineEdge(e, graph)
       if (colorMap(w) == ColorValue.WHITE) {

@@ -30,7 +30,7 @@ class SparseGraphImplTest extends TestCase {
     var edges: Int = 0
 
     for (v <- graph.vertices) {
-      for (e <- graph.getEdges(v)) {
+      for (e <- graph.edges(v)) {
         edges += 1
       }
     }

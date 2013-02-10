@@ -11,7 +11,7 @@ import org.gga.graph.search.dfs.DfsVisitor
  */
 class FilteredGraph(aGraph: Graph, aVertices: Array[Boolean], anEdges: Array[Boolean]) extends Graph {
   private final val verticesMap: Array[Boolean] = aVertices
-  private final val edges: Array[Boolean] = anEdges
+  private final val _edges: Array[Boolean] = anEdges
   private final val g: Graph = aGraph
 
   def this(g: Graph, filter: FilteredGraph.GraphFilter) = {
@@ -29,7 +29,7 @@ class FilteredGraph(aGraph: Graph, aVertices: Array[Boolean], anEdges: Array[Boo
   def edge(v: Int, w: Int): Option[Edge] = {
     if (!verticesMap(v) || !verticesMap(w)) return None
     val edge: Edge = g.edge(v, w).get
-    if (edge != null && edges(edge.getIdx)) Some(edge) else None
+    if (edge != null && _edges(edge.getIdx)) Some(edge) else None
   }
 
   def getEdgeIterator(v: Int): Nothing = {
@@ -39,7 +39,7 @@ class FilteredGraph(aGraph: Graph, aVertices: Array[Boolean], anEdges: Array[Boo
   def getEdgesIterator(v: Int): Iterator[Edge] = {
     if (!verticesMap(v)) return new SparseGraphImpl.EmptyIterator[Edge]
 
-    g.getEdges(v).filter((edge: Edge) => edges(edge.getIdx) && verticesMap(edge.w)).iterator
+    g.edges(v).filter((edge: Edge) => _edges(edge.getIdx) && verticesMap(edge.w)).iterator
   }
 
   def getDfs: Dfs = {
@@ -54,7 +54,7 @@ class FilteredGraph(aGraph: Graph, aVertices: Array[Boolean], anEdges: Array[Boo
     }
   }
 
-  def getEdges(v: Int): Iterable[Edge] = {
+  def edges(v: Int): Iterable[Edge] = {
     new Iterable[Edge] {
       def iterator: Iterator[Edge] = {
         getEdgesIterator(v)
@@ -79,7 +79,7 @@ object FilteredGraph {
     val result: Array[Boolean] = new Array[Boolean](g.E)
 
     for (v <- Range(0, g.V)) {
-      for (e <- g.getEdges(v)) {
+      for (e <- g.edges(v)) {
         result(e.getIdx) = filter.acceptEdge(e)
       }
     }

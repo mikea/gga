@@ -29,7 +29,7 @@ public class FilteredGraph implements Graph {
         for (int v = 0; v < g.V(); v++) {
             vertices[v] = filter.acceptVertex(v);
 
-            for (Edge e : g.getEdges(v)) {
+            for (Edge e : g.edges(v)) {
                 edges[e.idx()] = filter.acceptEdge(e);
             }
         }
@@ -76,7 +76,7 @@ public class FilteredGraph implements Graph {
 
         List<Edge> l = new ArrayList<Edge>();
 
-        for (Edge edge : g.getEdges(v)) {
+        for (Edge edge : g.edges(v)) {
             if (edges[edge.idx()] && vertices[edge.w()]) l.add(edge);
         }
 

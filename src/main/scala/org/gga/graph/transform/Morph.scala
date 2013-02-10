@@ -29,7 +29,7 @@ object Morph {
     val result: MutableGraph = new SparseGraphImpl(newSize, g.isDirected)
 
     for (v <- g.vertices) {
-      for (e <- g.getEdges(v)) {
+      for (e <- g.edges(v)) {
         val v1: Int = vertexMap(v)
         val w1: Int = vertexMap(e.w)
 
@@ -44,7 +44,7 @@ object Morph {
     result
   }
 
-  def isomorph[N, E](g: DataGraph[N, E], map: (Int) => Int): DataGraph[N, E] = {
+  def isomorph[N >: AnyRef, E](g: DataGraph[N, E], map: (Int) => Int): DataGraph[N, E] = {
     val vertexMap: Array[Int] = new Array[Int](g.V)
     var newSize: Int = -1
 
@@ -60,11 +60,11 @@ object Morph {
     val result: DataGraph[N, E] = new DataGraphImpl[N, E](newSize, g.isDirected)
 
     for (v <- g.vertices) {
-      result.setNode(vertexMap(v), g.getNode(v))
+      result.setNode(vertexMap(v), g.node(v))
     }
 
     for (v <- g.vertices) {
-      for (e <- g.getIntGraph.getEdges(v)) {
+      for (e <- g.intGraph.edges(v)) {
         val v1: Int = vertexMap(v)
         val w1: Int = vertexMap(e.w)
         result.insert(v1, w1, g.edge(v, e.w).get)
@@ -78,7 +78,7 @@ object Morph {
     val nodesDataMap: mutable.ArraySeq[N1] = new mutable.ArraySeq(g.V)
 
     for (v <- g.vertices) {
-      nodesDataMap(v) = nodeMap(g.getNode(v))
+      nodesDataMap(v) = nodeMap(g.node(v))
     }
 
     val newEdges: mutable.Map[N1, mutable.Map[N1, mutable.Buffer[E]]] = mutable.Map.empty
@@ -87,10 +87,10 @@ object Morph {
 
       val edges = newEdges.getOrElseUpdate(n1, {mutable.Map.empty})
 
-      for (e <- g.getIntGraph.getEdges(v)) {
+      for (e <- g.intGraph.edges(v)) {
         val n2: N1 = nodesDataMap(e.w)
         var edgesList = edges.getOrElseUpdate(n2, {mutable.Buffer.empty})
-        edgesList += g.getEdge(e)
+        edgesList += g.edge(e)
       }
     }
 

@@ -1,12 +1,10 @@
 package org.gga.graph.transform
 
-import org.gga.graph.Edge
 import org.gga.graph.Graph
 import org.gga.graph.MutableGraph
 import org.gga.graph.impl.DataGraphImpl
 import org.gga.graph.impl.SparseGraphImpl
 import org.gga.graph.maps.DataGraph
-import java.util.Arrays
 
 /**
  * @author mike
@@ -27,7 +25,7 @@ object Subgraph {
 
     for (v <- g.vertices) {
       if (verticesToInclude(v)) {
-        for (e <- g.getEdges(v)) {
+        for (e <- g.edges(v)) {
           if (verticesToInclude(e.w)) {
             result.insert(verticesMap(e.v), verticesMap(e.w))
           }
@@ -42,12 +40,12 @@ object Subgraph {
     subgraph(g, g.vertices.map(memberFunction))
   }
 
-  def subgraph[N, E](g: DataGraph[N, E], memberFunction: (N)=>Boolean): (DataGraph[N, E], Array[Int]) = {
+  def subgraph[N >: AnyRef, E](g: DataGraph[N, E], memberFunction: (N)=>Boolean): (DataGraph[N, E], Array[Int]) = {
     var newSize: Int = 0
     val verticesMap: Array[Int] = Array.fill(g.V)(-1)
 
     for (v <- g.vertices) {
-      if (memberFunction(g.getNode(v))) {
+      if (memberFunction(g.node(v))) {
         verticesMap(v) = newSize
         newSize += 1
       }
@@ -56,12 +54,12 @@ object Subgraph {
 
     for (v <- g.vertices) {
       if (verticesMap(v) >= 0) {
-        result.setNode(verticesMap(v), g.getNode(v))
+        result.setNode(verticesMap(v), g.node(v))
       }
     }
     for (v <- g.vertices) {
       if (verticesMap(v) >= 0) {
-        for (e <- g.getIntGraph.getEdges(v)) {
+        for (e <- g.intGraph.edges(v)) {
           if (verticesMap(e.w) >= 0) {
             result.insert(
                 verticesMap(e.v),

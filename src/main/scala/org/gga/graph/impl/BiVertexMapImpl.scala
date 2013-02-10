@@ -7,8 +7,8 @@ import scala.collection.mutable
 /**
  * @author mike
  */
-class BiVertexMapImpl[V] extends BiVertexMap[V] {
-  private val data: mutable.ArraySeq[V] = mutable.ArraySeq.empty
+class BiVertexMapImpl[V >: Null] extends BiVertexMap[V] {
+  private var data: mutable.ArraySeq[V] = mutable.ArraySeq.empty
   private final val map: mutable.Map[V, Int] = mutable.Map.empty[V, Int]
 
   def getVertex(data: V): Option[Int] = map.get(data)
@@ -16,7 +16,8 @@ class BiVertexMapImpl[V] extends BiVertexMap[V] {
   def put(v: Int, data: V) {
     map.put(data, v)
     if (v >= this.data.length) {
-      this.data.padTo(v max (this.data.length + 1) * 2, null)
+      val newSize: Int = v max (this.data.length + 1) * 2
+      this.data = this.data.padTo(newSize, null: V)
     }
     this.data(v) = data
   }
