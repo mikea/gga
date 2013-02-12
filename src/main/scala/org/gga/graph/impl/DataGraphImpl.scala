@@ -8,10 +8,13 @@ import javax.annotation.Nullable
 
 
 object DataGraphImpl {
+
   class Builder[N, E](isDirected: Boolean) {
 
   }
+
 }
+
 /**
  * @author mike
  */
@@ -56,7 +59,9 @@ class DataGraphImpl[N >: Null, E](aSize: Int, anIsDirected: Boolean) extends Dat
     edge
   }
 
-  def remove(edge: Edge) { graph.remove(edge) }
+  def remove(edge: Edge) {
+    graph.remove(edge)
+  }
 
   def intGraph: Graph = graph
 
@@ -64,35 +69,55 @@ class DataGraphImpl[N >: Null, E](aSize: Int, anIsDirected: Boolean) extends Dat
 
   def node(v: Int): N = vertexMap.get(v).get
 
-  def setNode(v: Int, data: N) { vertexMap.put(v, data) }
+  def setNode(v: Int, data: N) {
+    vertexMap.put(v, data)
+  }
 
-  def nodes: List[N] = ???
+  def nodes: Seq[N] = vertices.map(node(_))
 
   override def toString = {
     val result = new StringBuilder("DataGraphImpl{")
     result.append("isDirected=")
     result.append(isDirected)
+
+    // Nodes
     result.append(", ")
-    result.append("[\n")
-    for (v <- 0 until V) {
-      for (e <- graph.edges(v)) {
-        if (!isDirected || e.other(v) >= v) {
-          result.append("   ")
-          result.append(node(v))
-          if (isDirected) {
-            result.append("->")
-          } else {
-            result.append("<->")
+    result.append(nodes.map(n => n.toString).sorted.mkString("[", ", ", "]"))
+    result.append(", ")
+
+    {
+      // Edges
+      var edges: Vector[String] = Vector()
+      for (v <- vertices) {
+        for (edge <- graph.edges(v)) {
+          if (isDirected || !(edge.other(v) < v)) {
+            val edgeString = new StringBuilder()
+            edgeString.append(node(v))
+            if (isDirected) {
+              edgeString.append("->")
+            } else {
+              edgeString.append("<->")
+            }
+            edgeString.append(node(edge.other(v)))
+            edgeString.append(":")
+            edgeString.append(this.edge(edge))
+            edges :+= edgeString.toString()
           }
-          result.append(node(e.other(v)))
-          result.append(":")
-          result.append(edge(e))
-          result.append("\n")
         }
       }
+
+      edges = edges.sorted
+      result.append("[\n")
+      for (edge <- edges) {
+        result.append("    ")
+        result.append(edge)
+        result.append("\n")
+      }
+      result.append("]")
     }
-    result.append("]")
-    result.append("}")
-    result.toString()
-  }
+
+  result.append("}")
+  result.toString()
+}
+
 }
